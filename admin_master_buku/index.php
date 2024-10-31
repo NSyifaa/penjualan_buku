@@ -97,9 +97,7 @@
                     <th>Judul Buku</th>
                     <th>Kategori Buku</th>
                     <th>Nomor ISBN</th>
-                    <th>Penerbit</th>
-                    <th>Jumlah Hal</th>
-                    <th>Cetakan Ke</th>
+                    
                     <th width="15%"><center>Aksi</center></th>
                     
                   </tr>
@@ -141,16 +139,7 @@
                           <td>
                             <?=$data['isbn'];?>
                           </td>
-                          <td>
-                            <?=$data['penerbit'];?><br>
-                            <b><?=$data['tahun'];?></b>
-                          </td>
-                          <td>
-                            <?=$data['jml_hal'];?>
-                          </td>
-                          <td>
-                            <?=$data['cetakan'];?>
-                          </td>
+                          
                           <td>
                             <center>
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-kd_buku="<?=$data['kd_buku'];?>"><i class="nav-icon fas fa-trash"></i> Hapus</button>
