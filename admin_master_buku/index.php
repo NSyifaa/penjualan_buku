@@ -399,7 +399,25 @@
               </button>
             </div>
             <div class="modal-body">
-              <a href="download.php?filename=template_buku.xls" class="btn btn-sm btn-secondary"><i class="nav-icon fas fa-file"></i> Download Template Import Excel </a>
+              <div class="row">
+                <div class="col-lg-6">
+              <center>
+            <h6 for="download"><b> Download Template </b></h6>
+              <a href="download.php?filename=template_buku.xls" class="btn btn-sm btn-secondary"><i class="nav-icon fas fa-file"></i> Download </a>
+              
+              </center>
+              </div>
+
+              <div clas="col-lg-6">
+
+              <center>
+            <h6 for="download"><b> Download Data Kategori </b></h6>
+              <a href="export.php" class="btn btn-sm btn-secondary"><i class="nav-icon fas fa-file"></i> Download </a>
+             
+              </center>
+              </div>
+
+              </div>
               <br>
               <br>
               <form action="import.php" method="post" enctype="multipart/form-data">
