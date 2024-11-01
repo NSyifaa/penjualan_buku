@@ -80,7 +80,7 @@
 
             <div class="card">
               <div class="card-header" style="background-color: #091057;">
-                <h3 class="card-title" style="color: white"><i class="nav-icon fas fa-file"></i> Data Admin</h3>
+                <h3 class="card-title" style="color: white"><i class="nav-icon fas fa-file"></i> Data Kasir</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -93,6 +93,8 @@
                     <th>No</th>
                     <th>Nama Pengguna</th>
                     <th>Username</th>
+                    <th>Alamat</th>
+                    <th>Kontak</th>
                     <th><center>Aksi</center></th>
                     
                   </tr>
@@ -119,12 +121,22 @@
                             <?=$data['nama_user'];?>
                           </td>
                           <td>
+                            <?=$data['alamat'];?>
+                          </td>
+                          <td>
+                            <?=$data['kontak'];?>
+                          </td>
+                          <td>
                             <center>
-                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-pengguna="<?= $data['username'];?>" ><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
-                          <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#modal-edit" > 
+                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-reset"  data-id_kasir="<?=$data['id'];?>"><i class="nav-icon fas fa-sync"></i> Reset Password</button>
+
+
+                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-id_kasir="<?= $data['id'];?>" ><i class="nav-icon fas fa-trash"></i> Hapus</button>
+
+                          <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#modal-edit" data-id_kasir="<?=$data['id'];?>" data-username="<?=$data['username'];?>" data-nama_pengguna="<?=$data['nama_user'];?>" data-alamat="<?=$data['alamat'];?>"  data-kontak="<?=$data['kontak'];?>"> 
                           <i class="nav-icon fas fa-edit"></i> Edit
-                            </button>
+                          </button>
                             </center>
                           </td>
                         </tr>
@@ -175,7 +187,7 @@
             <div class="modal-body">
               <form role="form" class="form-layout" action="proseshapus.php" method="post">
               <p><b> Anda akan menghapus data? </b></p>
-              <input type="text" name="username" id="username" hidden>
+              <input type="text" name="id_kasir" id="id_kasir" hidden>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="nav-icon fas fa-times"></i> Tutup</button>
@@ -195,10 +207,11 @@
             <div class="modal-body">
               <form role="form" class="form-layout" action="prosesreset.php" method="post">
               <p><b> Anda akan mereset semua data? </b></p>
+              <input type="text" name="id" id="id" >
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="nav-icon fas fa-times"></i> Tutup</button>
-              <button type="submit" class="btn btn-danger btn-sm"><i class="nav-icon fas fa-trash"></i> Ya, Hapus Data</button>
+              <button type="submit" name="reset" class="btn btn-danger btn-sm"><i class="nav-icon fas fa-trash"></i> Ya, reset Data</button>
             </form>
             </div>
           </div>
@@ -220,9 +233,24 @@
             <div class="modal-body">
               <form action="tambah.php"  role="form" class="form-layout" method="post" enctype="multipart/form-data">
              <div class="form-group">
-              <label for="kategori">Nama Kategori Buku</label>
-              <input type="text" class="form-control" id="kategori" name="kategori" placeholder="input nama kategori" required>
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="input nama username" required>
              </div>
+             <div class="form-group">
+              <label for="nama">Nama Pengguna</label>
+              <input type="text" class="form-control" id="nama" name="nama" placeholder="input nama Pengguna" required>
+             </div>
+
+             <div class="form-group">
+              <label for="alamat">Alamat</label>
+              <textarea type="text" class="form-control" id="alamat" name="alamat" placeholder="input alamat" required></textarea>
+             </div>
+
+             <div class="form-group">
+              <label for="kontak">Kontak</label>
+              <input type="number" class="form-control" id="kontak" name="kontak" placeholder="input kontak" required>
+             </div>
+
             </div>
             <div class="modal-footer justify-content-between-right">
               <button type="submit" name="tambah" class="btn btn-primary"><i class="nav-icon fas fa-download"></i>Tambah</button>
@@ -248,15 +276,32 @@
               <form action="edit.php"  role="form" class="form-layout" method="post" enctype="multipart/form-data">
               
               <div class="form-group">
-              <label for="id">ID Kategori</label>
-              <input type="text" class="form-control" id="id_kategoriterpilih" name="id_kategoriterpilih" disabled>
-              <input type="text" class="form-control" id="id_kategoriterpilih2" name="id_kategoriterpilih2" hidden>
+              <label for="id">Id Admin</label>
+              <input type="text" class="form-control" id="id_kasirterpilih" name="id_kasirterpilih" disabled>
+              <input type="text" class="form-control" id="id_kasirterpilih2" name="id_kasirterpilih2" hidden>
              </div>
 
              <div class="form-group">
-              <label for="kategori">Nama Kategori Buku</label>
-              <input type="text" class="form-control" id="kategori" name="kategoribuku" required>
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" required>
              </div>
+
+             <div class="form-group">
+              <label for="nama">Nama Pengguna</label>
+              <input type="text" class="form-control" id="nama" name="nama" required>
+             </div>
+
+             <div class="form-group">
+              <label for="alamat">Alamat</label>
+              <input type="text" class="form-control" id="alamat" name="alamat" required>
+             </div>
+
+             <div class="form-group">
+              <label for="kontak">Kontak</label>
+              <input type="number" class="form-control" id="kontak" name="kontak" required>
+             </div>
+
+
             </div>
             <div class="modal-footer justify-content-between-right">
               <button type="submit" name="edit" class="btn btn-primary"><i class="nav-icon fas fa-edit"></i>Edit Data</button>
@@ -279,10 +324,10 @@
         $('#modal-default').on('show.bs.modal', function(e){
           
           //get data
-          var id_kategori = $(e.relatedTarget).data('id_kategori');
+          var id_kasir = $(e.relatedTarget).data('id_kasir');
           
 
-          $(e.currentTarget).find('input[name="id_kategoribuku"]').val(id_kategori);
+          $(e.currentTarget).find('input[name="id_kasir"]').val(id_kasir);
 
         });
 </script>
@@ -291,14 +336,33 @@
         $('#modal-edit').on('show.bs.modal', function(e){
           
           //get data
-          var id_kategori = $(e.relatedTarget).data('id_kategori');
-          var kategori = $(e.relatedTarget).data('kategori');
+          var id_kasir       = $(e.relatedTarget).data('id_kasir');
+          var username       = $(e.relatedTarget).data('username');
+          var nama_pengguna  = $(e.relatedTarget).data('nama_pengguna');
+          var alamat         = $(e.relatedTarget).data('alamat');
+          var kontak         = $(e.relatedTarget).data('kontak');
 
-          $(e.currentTarget).find('input[name="id_kategoriterpilih"]').val(id_kategori);
-          $(e.currentTarget).find('input[name="id_kategoriterpilih2"]').val(id_kategori);
-          $(e.currentTarget).find('input[name="kategoribuku"]').val(kategori);
+          $(e.currentTarget).find('input[name="id_kasirterpilih"]').val(id_kasir);
+          $(e.currentTarget).find('input[name="id_kasirterpilih2"]').val(id_kasir);
+          $(e.currentTarget).find('input[name="username"]').val(username);
+          $(e.currentTarget).find('input[name="nama"]').val(nama_pengguna);
+          $(e.currentTarget).find('input[name="alamat"]').val(alamat);
+          $(e.currentTarget).find('input[name="kontak"]').val(kontak);
         });
 </script>
+
+<script type="text/javascript">
+        $('#modal-reset').on('show.bs.modal', function(e){
+          
+          //get data
+          var id_kasir = $(e.relatedTarget).data('id_kasir');
+        
+
+          $(e.currentTarget).find('input[name="id"]').val(id_kasir);
+          
+        });
+</script>
+
 
 </body>
 </html>
