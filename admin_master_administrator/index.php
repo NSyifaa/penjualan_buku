@@ -129,7 +129,7 @@
                           <td>
                             <center>
 
-                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-reset" data-pengguna="<?= $data['username'];?>" data-id="<?=$data['id'];?>"><i class="nav-icon fas fa-sync"></i> Reset Password</button>
+                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-reset"  data-id_admin="<?=$data['id'];?>"><i class="nav-icon fas fa-sync"></i> Reset Password</button>
 
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-id_admin="<?= $data['id'];?>" ><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
@@ -206,7 +206,7 @@
             <div class="modal-body">
               <form role="form" class="form-layout" action="prosesreset.php" method="post">
               <p><b> Anda akan mereset password? </b></p>
-              <input type="text" name="id" id="id" hidden>
+              <input type="text" name="id" id="id" hidden >
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="nav-icon fas fa-times"></i> Tutup</button>
@@ -356,10 +356,10 @@
         $('#modal-reset').on('show.bs.modal', function(e){
           
           //get data
-          var id_admin = $(e.relatedTarget).data('id');
+          var id_admin = $(e.relatedTarget).data('id_admin');
         
 
-          $(e.currentTarget).find('input[name="id"]').val(id);
+          $(e.currentTarget).find('input[name="id"]').val(id_admin);
           
         });
 </script>

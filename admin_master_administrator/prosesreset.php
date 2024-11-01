@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Proses Reset Mahasiswa</title>
+	<title>Proses Reset Kasir</title>
 </head>
 <body>
 	<?php
@@ -23,7 +23,7 @@
 	 <script src="../assets_adminLTE/dist/js/sweetalert.min.js"> 
 </script>
 <script>
-swal("Berhasil", "Data Kategori sudah Berhasil di reset", "success");
+swal("Berhasil", "Password berhasil direset", "success");
 
 setTimeout(function(){
 window.location.href = "../auth/logout.php";
