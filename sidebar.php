@@ -17,7 +17,7 @@
             </a>
           </li>
 
-           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?>">
+           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?>">
             <a href="../admin_dashboard" class="nav-link ">
               <i class="nav-icon fas fa-database"></i>
               <p>
@@ -28,20 +28,18 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="../admin_master_kategori" class="nav-link <?php if($konstruktor=='admin_master_kategori'){echo 'active';}?> ">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-folder nav-icon"></i>
                   <p>Kategori Buku</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../admin_master_buku" class="nav-link <?php if($konstruktor=='admin_master_buku'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-book nav-icon"></i>
                   <p>Buku</p>
                 </a>
               </li>
-            </ul>
-          </li>
-          
-          <li class="nav-item">
+
+              <li class="nav-item">
             <a href="../admin_master_administrator" class="nav-link <?php if($konstruktor=='admin_master_administrator'){echo 'active';}?>">
               <i class="nav-icon fas fa-user"></i>
               <p>
@@ -68,6 +66,10 @@
             </a>
           </li>
 
+            </ul>
+          </li>
+          
+          
           <li class="nav-item">
             <a href="../ganti_pass" class="nav-link <?php if($konstruktor=='ganti_pass'){echo 'active';}?>">
               <i class="nav-icon fas fa-lock"></i>
