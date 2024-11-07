@@ -65,7 +65,7 @@
       <div class="container-fluid">
         <div class="row-mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Data Administrator</h1>
+            <h1 class="m-0">Data Kasir</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -134,7 +134,7 @@
 
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-id_kasir="<?= $data['id'];?>" ><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
-                          <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#modal-edit" data-id_kasir="<?=$data['id'];?>" data-username="<?=$data['username'];?>" data-nama_pengguna="<?=$data['nama_user'];?>" data-alamat="<?=$data['alamat'];?>"  data-kontak="<?=$data['kontak'];?>"> 
+                          <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-id_kasir="<?=$data['id'];?>" data-username="<?=$data['username'];?>" data-nama_pengguna="<?=$data['nama_user'];?>" data-alamat="<?=$data['alamat'];?>"  data-kontak="<?=$data['kontak'];?>"> 
                           <i class="nav-icon fas fa-edit"></i> Edit
                           </button>
                             </center>
