@@ -17,7 +17,25 @@
             </a>
           </li>
 
-           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?>">
+          <li class="nav-item" >
+            <a href="../admin_pembelian" class="nav-link  <?php if($konstruktor=='admin_pembelian'){echo 'active';}?>">
+              <i class="nav-icon fas fa-shopping-cart"></i>
+              <p>
+               Pembelian
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item" >
+            <a href="../admin_stok" class="nav-link  <?php if($konstruktor=='admin_stok'){echo 'active';}?>">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+               Stok Buku
+              </p>
+            </a>
+          </li>
+
+           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_supplier'){echo 'menu-open';}?>">
             <a href="../admin_dashboard" class="nav-link ">
               <i class="nav-icon fas fa-database"></i>
               <p>
@@ -58,7 +76,7 @@
           </li>
 
            <li class="nav-item">
-            <a href="../data_supplier" class="nav-link">
+            <a href="../admin_master_supplier" class="nav-link <?php if($konstruktor=='admin_master_supplier'){echo 'active';}?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Data supplier
