@@ -147,7 +147,7 @@
                              }elseif($st_po=='2'){
                                 ?>
                               <center>
-                                <button class="btn btn-sm btn-warning">Sedang dicek
+                                <button class="btn btn-sm btn-warning">Sedang diproses
                                 </button>
                               </center>
                                 <?php
@@ -186,7 +186,9 @@
                               <?php
                              }else {
                                 ?>
-                            <a href="detail.php?id_po=<?=$data['id_po'];?>" target="_blank" class= "btn btn-sm btn-warning"><i class="nav-icon fas fa-file"></i> Download SP</a>
+                            <a href="datapo.php?id_po=<?=$data['id_po'];?>" target="_blank" class= "btn btn-sm btn-warning"><i class="nav-icon fas fa-file"></i> Dok.PO</a>
+                              
+                            <a href="cekpo.php?id_po=<?=$data['id_po'];?>"  class= "btn btn-sm btn-secondary"><i class="nav-icon fas fa-file"></i> Cek PO</a>
                               
                               <?php
 
@@ -273,9 +275,6 @@
             </div>
             <div class="modal-body">
               <form action="tambah.php"  role="form" class="form-layout" method="post" enctype="multipart/form-data">
-             
-
-            
 
              <div class="form-group">
               <label for="sup">Nama Supplier</label>
@@ -302,9 +301,7 @@
                 ?>
               </select>
              </div>
-
             
-
             </div>
             <div class="modal-footer justify-content-between-right">
               <button type="submit" name="tambah" class="btn btn-primary"><i class="nav-icon fas fa-download"></i> Tambah Data</button>

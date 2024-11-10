@@ -75,6 +75,7 @@
               
                   $tanggal = $arrqweri['tanggal'];
                   $namasup = $arrqweri['kode_sup'];
+                  $status = $arrqweri['status'];
 
                   $nama = mysqli_query($koneksi, "SELECT nama_suplier FROM tbl_supplier WHERE kode_sup='$namasup'") or die (mysqli_error($koneksi));
                   $arrqweri = mysqli_fetch_assoc($nama);
@@ -136,6 +137,7 @@
                     {
                       while($data=mysqli_fetch_array($sql_panggilbuku))
                       {
+                        $disabled = ($status == 2) ? 'disabled' : '';
                         ?>
                         <tr>
                           <td>
@@ -161,8 +163,10 @@
                           
                           <td>
                             <center>
-                          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah"  data-kd_buku="<?=$data['kd_buku'];?>" data-nama="<?=$data['judul_buku'];?>" data-id_po="<?= $idpo;?>"><i class="nav-icon fas fa-plus"></i> Tambah</button>
+                          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah"  data-kd_buku="<?=$data['kd_buku'];?>" data-nama="<?=$data['judul_buku'];?>" data-id_po="<?= $idpo;?>" <?=$disabled;?>><i class="nav-icon fas fa-plus"></i> Tambah</button>
                             </center>
+
+                            
                           </td>
                         </tr>
 
@@ -242,8 +246,8 @@
                           <td>
                             <?php
                           $subtotal = $jml * $harga;
-                          echo $subtotal;
-
+                          echo "Rp. " . number_format($subtotal, 0, ',', '.');
+                         
                           $total += $subtotal;
                           ?>
                           </td>
@@ -255,8 +259,10 @@
                       echo "
                       <tr>
                       <td colspan=\"5\" align=\"center\" style=\"background-color: #FFD700 ;\"><h6 >Total Harga</h6>
+                     
                       </td>
                       <td style=\"background-color: #FFD700 ;\">
+                     
                       ".$total."
                       </td>
                       </tr>";
@@ -270,7 +276,14 @@
                     ?>
                     </tbody>
                   </table>
-                  <a href="submit.php?id_po=<?=$idpo;?>" name="submit" class= "btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a>
+
+                  <?php
+                  // Tambahkan kondisi untuk menampilkan tombol hanya jika status belum selesai (contoh: status != 2)
+                  if ($status != 2) {
+                      echo '<a href="submit.php?id_po=' . $idpo . '" name="submit" class="btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a>';
+                  }
+                  ?>
+                  <!-- <a href="submit.php?id_po=<?=$idpo;?>" name="submit" class= "btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a> -->
 
                  
                 </div>
