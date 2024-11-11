@@ -13,24 +13,36 @@
 	if(isset($_GET['id_po'])) {
         $idpo = $_GET['id_po'];
 
-        // Update status PO menjadi '2' (sedang dicek)
-        $update_status = mysqli_query($koneksi, "UPDATE tbl_po SET status = '2' WHERE id_po = '$idpo'");
+        $query_cek =  mysqli_query($koneksi, "SELECT id FROM tbl_po_detail WHERE id_po='$idpo'")or die(mysqli_error($koneksi));
+        if (mysqli_num_rows($query_cek) == 0) {
+            echo "<script src='../assets_adminLTE/dist/js/sweetalert.min.js'></script>";
 
-        // Cek apakah query berhasil
-        if($update_status) {
-            echo "<script src='../assets_adminLTE/dist/js/sweetalert.min.js'></script>";
             echo "<script>
-                    swal('Berhasil', 'Status PO berhasil diperbaharui menjadi sedang dicek', 'success');
-                    setTimeout(function(){
-                        window.location.href = '../admin_pembelian';
-                    }, 2000);
-                  </script>";
-        } else {
-            echo "<script src='../assets_adminLTE/dist/js/sweetalert.min.js'></script>";
-            echo "<script>
-                    swal('Gagal', 'Gagal memperbarui status PO', 'error');
-                  </script>";
+                swal('Peringatan', 'Barang masih kosong!!!', 'warning');
+                setTimeout(function(){
+                    window.location.href = '../admin_pembelian/detail.php?id_po=$idpo';
+                }, 3000);
+              </script>";
+        }else {
+            $update_status = mysqli_query($koneksi, "UPDATE tbl_po SET status = '2' WHERE id_po = '$idpo'");
+
+            // Cek apakah query berhasil
+            if($update_status) {
+                echo "<script src='../assets_adminLTE/dist/js/sweetalert.min.js'></script>";
+                echo "<script>
+                        swal('Berhasil', 'Status PO berhasil diperbaharui menjadi sedang dicek', 'success');
+                        setTimeout(function(){
+                            window.location.href = '../admin_pembelian';
+                        }, 2000);
+                      </script>";
+            } else {
+                echo "<script src='../assets_adminLTE/dist/js/sweetalert.min.js'></script>";
+                echo "<script>
+                        swal('Gagal', 'Gagal memperbarui status PO', 'error');
+                      </script>";
+            }
         }
+      
     } else {
         // Jika id_po tidak ditemukan dalam URL
         echo "<script>

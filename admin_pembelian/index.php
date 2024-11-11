@@ -95,7 +95,7 @@
                     <th>Nomor PO</th>
                     <th>Tanggal</th>
                     <th>Nama Supplier</th>
-                    <th>Status</th>
+                    <th><center>Status</center></th>
                     <th width="30%"><center>Aksi</center></th>
                     
                   </tr>
@@ -140,7 +140,7 @@
                              if($st_po=='1'){
                               ?>
                               <center>
-                                <button class="btn btn-sm btn-success">PO
+                                <button class="btn btn-sm btn-primary">PO
                                 </button>
                               </center>
                               <?php
@@ -154,7 +154,7 @@
                              }elseif($st_po=='3'){
                                 ?>
                                  <center>
-                                <button class="btn btn-sm btn-primary">Sedang dikirim
+                                <button class="btn btn-sm btn-success">Selesai
                                 </button>
                               </center>
                                 <?php
@@ -162,9 +162,7 @@
                              }
                              else{
                               ?>
-                              <center>
-                                <button class="btn btn-sm btn-danger">Selesai</button>
-                              </center>
+                             
                               <?php
 
                              }

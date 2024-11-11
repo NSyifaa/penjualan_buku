@@ -69,7 +69,8 @@
 
               <div class="card-body">
               <a href="../admin_pembelian" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
-
+              <br>
+              <br>
               <?php
                   $idpo = @$_GET['id_po'];
                   $qweri = mysqli_query($koneksi, "SELECT * FROM tbl_po WHERE id_po='$idpo'") or die (mysqli_error($koneksi));
@@ -123,7 +124,7 @@
                       <th>Subtotal</th>
                       <th>Qty Datang</th>
                       <th>Harga Datang</th>
-                      <th>Status</th>
+                      <th width="15%"><center>Status</center></th>
                       <th width="15%"><center>Aksi</center></th>
                     </tr>
                   </thead>
@@ -136,6 +137,7 @@
                     if(mysqli_num_rows($sql_panggilpo_detail) > 0) {
                       while($data = mysqli_fetch_array($sql_panggilpo_detail)) {
                        
+                        $id = $data['id'];
                         $kd_buku = $data['kd_buku'];
                         $sql_buku = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku = '$kd_buku'") or die(mysqli_error($koneksi));
                         $buku = mysqli_fetch_assoc($sql_buku)['judul_buku'];
@@ -144,13 +146,15 @@
                         $subtotal = $data['jumlah'] * $data['harga'];
                         $qty_datang = $data['qty_dtg'];
                         $harga_datang = $data['harga_dtg'];
+                        $status = $data['stat'];
 
-                        $qty_datang_display = is_null($qty_datang) || $qty_datang === '' ? 'Belum diisi' : $qty_datang;
+                        $qty_datang_display = is_null($qty_datang) || $qty_datang === '' ? '-' : $qty_datang;
 
-                        $harga_datang_display = is_null($harga_datang) || $harga_datang === '' ? 'Belum diisi' : 'Rp. ' . number_format($harga_datang, 0, ',', '.');
+                        $harga_datang_display = is_null($harga_datang) || $harga_datang === '' ? '-' : 'Rp. ' . number_format($harga_datang, 0, ',', '.');
                        
-                        $status = 'Pending'; 
-                        $btn_verifikasi = '<a href="verifikasi.php?id_po=' . $idpo . '" class="btn btn-sm btn-success">Verifikasi</a>';
+                        $btn_verifikasi = '<a href="verifikasi.php?id=' . $id . '&id_po='.$idpo.'" class="btn btn-sm btn-success">Verifikasi</a>';
+
+                        $disabled = ($status == 1) ? 'disabled' : '';
                         ?>
 
                         <tr>
@@ -159,11 +163,21 @@
                           <td><?=$buku;?></td>
                           <td><?=$data['jumlah'];?></td>
                           <td>Rp. <?=number_format($subtotal, 0, ',', '.');?></td>  
-                          <td><?=$data['qty_dtg'];?></td>
-                          <td>Rp.<?=$data['harga_dtg'];?></td>
-                          <td><?=$status;?></td>
+                          <td><center><?=$qty_datang_display;?></center></td>
+                          <td><center><?=$harga_datang_display;?></center></td>
                           <td>
-                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-idpo="<?=$idpo;?>" data-item="<?=$buku;?>"  data-qty="<?=$data['jumlah'];?>" data-sub="<?=$subtotal;?>" > 
+                            <center>
+                            <?php
+                            if ($status == 0) {
+                              echo '<button class="btn btn-secondary btn-sm">Belum Verifikasi</button>';
+                            } else {
+                              echo '<button class="btn btn-success btn-sm">Terverifikasi</button>';
+                            }
+                            ?>
+                            </center>
+                          </td>
+                          <td>
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-idpo="<?=$idpo;?>" data-item="<?=$buku;?>"  data-qty="<?=$data['jumlah'];?>" data-sub="<?=$subtotal;?>" data-qtydtg="<?= $qty_datang_display;?>" <?= $disabled;?>> 
                           <i class="nav-icon fas fa-edit"></i> Edit
                           </button>
 
@@ -259,12 +273,14 @@
           var qty    = $(e.relatedTarget).data('qty');
           var sub    = $(e.relatedTarget).data('sub');
           var idpo    = $(e.relatedTarget).data('idpo');
+          var qty_dtg    = $(e.relatedTarget).data('qtydtg');
           
 
           $(e.currentTarget).find('input[name="item"]').val(item);
           $(e.currentTarget).find('input[name="qty"]').val(qty);
           $(e.currentTarget).find('input[name="sub"]').val(sub);
           $(e.currentTarget).find('input[name="idpo"]').val(idpo);
+          $(e.currentTarget).find('input[name="qtydtg"]').val(qty_dtg);
          
         });
 </script>

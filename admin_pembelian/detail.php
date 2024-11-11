@@ -137,7 +137,7 @@
                     {
                       while($data=mysqli_fetch_array($sql_panggilbuku))
                       {
-                        $disabled = ($status == 2) ? 'disabled' : '';
+                        $disabled = ($status >= 2) ? 'disabled' : '';
                         ?>
                         <tr>
                           <td>
@@ -239,7 +239,7 @@
                           <td>
                           <?php 
                           $harga = $data['harga'];
-                          echo $harga;
+                          echo "Rp. " . number_format($harga, 0, ',', '.');
 
                           ?>
                           </td>
@@ -263,7 +263,7 @@
                       </td>
                       <td style=\"background-color: #FFD700 ;\">
                      
-                      ".$total."
+                      Rp. ". number_format($total, 0, ',', '.')."
                       </td>
                       </tr>";
                     }
@@ -279,7 +279,7 @@
 
                   <?php
                   // Tambahkan kondisi untuk menampilkan tombol hanya jika status belum selesai (contoh: status != 2)
-                  if ($status != 2) {
+                  if ($status < 2) {
                       echo '<a href="submit.php?id_po=' . $idpo . '" name="submit" class="btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a>';
                   }
                   ?>
@@ -380,8 +380,8 @@
         $jumlah = trim(mysqli_escape_string($koneksi, $_POST['jumlah']));
         $harga = trim(mysqli_escape_string($koneksi, $_POST['harga']));
         $idpo = trim(mysqli_escape_string($koneksi, $_POST['idterpilih2']));
-        
-        $querycek = mysqli_query($koneksi, "INSERT INTO tbl_po_detail VALUES (NULL,'$idpo', '$kodebuku', '$jumlah', '$harga')") or die(mysqli_error($koneksi));
+        $stat = 0;
+        $querycek = mysqli_query($koneksi, "INSERT INTO tbl_po_detail (id, id_po, kd_buku, jumlah, harga, stat) VALUES (NULL,'$idpo', '$kodebuku', '$jumlah', '$harga', '$stat')") or die(mysqli_error($koneksi));
 
      
         

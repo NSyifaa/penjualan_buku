@@ -17,22 +17,39 @@ if (isset($_POST['tambah'])) {
     $qty_dtg = $_POST['qtydtg']; 
     $sub = $_POST['sub']; 
 
-    
-    $harga_datang = ($sub / $qty) * $qty_dtg; 
+    if ($qty_dtg > $qty) {
+    echo '
+    <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+    <script>
+    swal("Peringatan !", "Jumlah Datang melebihi jumlah PO", "warning");
+
+    setTimeout(function(){
+        window.location.href = "cekpo.php?id_po='.$idpo.'";
+    }, 2000);
+    </script>
+    ';
+    }else {
+      $harga_datang = ($sub / $qty) * $qty_dtg; 
 
    
-    $update_query = "UPDATE tbl_po_detail SET qty_dtg = '$qty_dtg', harga_dtg = '$harga_datang' WHERE id_po = '$idpo' AND kd_buku = (SELECT kd_buku FROM tbl_buku WHERE judul_buku = '$item')";
+      $update_query = "UPDATE tbl_po_detail SET qty_dtg = '$qty_dtg', harga_dtg = '$harga_datang' WHERE id_po = '$idpo' AND kd_buku = (SELECT kd_buku FROM tbl_buku WHERE judul_buku = '$item')";
+  
+      if (mysqli_query($koneksi, $update_query)) {
+          echo '<script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+                <script>
+                swal("Berhasil", "Data PO telah diperbarui", "success");
 
-    if (mysqli_query($koneksi, $update_query)) {
-        echo "<script>
-                alert('Data berhasil diperbarui.');
-                window.location.href = 'cekpo.php?id_po=$idpo';
-              </script>";
-    } else {
-        echo "<script>
-                alert('Gagal memperbarui data. Kesalahan: " . mysqli_error($koneksi) . "');
-              </script>";
+                setTimeout(function(){
+                    window.location.href = "cekpo.php?id_po='.$idpo.'";
+                }, 2000);
+                </script>';
+      } else {
+          echo "<script>
+                  alert('Gagal memperbarui data. Kesalahan: " . mysqli_error($koneksi) . "');
+                </script>";
+      }
     }
+    
 }
 ?>
 </body>
