@@ -35,7 +35,7 @@
             </a>
           </li>
 
-           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_supplier'){echo 'menu-open';}?>">
+           <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_supplier'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_margin'){echo 'menu-open';}?>">
             <a href="../admin_dashboard" class="nav-link ">
               <i class="nav-icon fas fa-database"></i>
               <p>
@@ -44,6 +44,9 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+
+
+
               <li class="nav-item">
                 <a href="../admin_master_kategori" class="nav-link <?php if($konstruktor=='admin_master_kategori'){echo 'active';}?> ">
                   <i class="fas fa-folder nav-icon"></i>
@@ -54,6 +57,13 @@
                 <a href="../admin_master_buku" class="nav-link <?php if($konstruktor=='admin_master_buku'){echo 'active';}?>">
                   <i class="fas fa-book nav-icon"></i>
                   <p>Buku</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="../admin_master_margin" class="nav-link <?php if($konstruktor=='admin_master_margin'){echo 'active';}?>">
+                  <i class="fas fa-book nav-icon"></i>
+                  <p>Margin</p>
                 </a>
               </li>
 
