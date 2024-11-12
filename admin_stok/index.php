@@ -89,9 +89,7 @@
                 <th>Data Buku</th>
                 <th>Qty</th>
                 <th>Harga Beli</th>
-                <th>Harga Jual</th>
-                <th>Harga Beli</th>
-                <th>Keuntungan</th>
+               
                 
               </tr>
               </thead>
