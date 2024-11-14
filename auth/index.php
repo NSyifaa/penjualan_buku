@@ -66,7 +66,6 @@ require_once '../database/koneksi.php';
             $cekdatabase = mysqli_query($koneksi, "SELECT * FROM tbl_pengguna WHERE username= '$isianusername' AND password= '$isianpw'") or die(mysqli_error($koneksi));
 
             $returnvalue = mysqli_num_rows($cekdatabase);
-            echo $returnvalue;
 
            if($returnvalue==1){
             $array = mysqli_fetch_assoc($cekdatabase);

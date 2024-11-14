@@ -7,7 +7,8 @@
   <?php
   session_start();
   $konstruktor ='admin_stok';
-
+  require_once '../database/koneksi.php';
+  
   if(isset($_SESSION['status'])){
     $status = $_SESSION['status'];
     if($status != 0){
@@ -89,12 +90,37 @@
                 <th>Data Buku</th>
                 <th>Qty</th>
                 <th>Harga Beli</th>
+                <th>Harga Jual</th>
                
                 
               </tr>
               </thead>
               <tbody>
-                
+              <?php
+                    $no=1;
+                    $sql_panggilstok = mysqli_query($koneksi, "SELECT * FROM tbl_stok") or die(mysqli_error($koneksi));
+
+                    if (mysqli_num_rows($sql_panggilstok) > 0) {
+                      while ($data_stok = mysqli_fetch_array($sql_panggilstok)) {
+                        ?>
+                        <tr>
+                          <td><?= $no++ ; ?></td>
+                          <td>
+                            <?php 
+                              $kd_buku = $data_stok['kd_buku']; 
+                              $pgl_buku = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'")or die(mysqli_error($koneksi));
+                              $data_buku = mysqli_fetch_array($pgl_buku);
+                              echo $nama_buku = $data_buku['judul_buku'];
+                            ?>
+                          </td>
+                          <td><?= $data_stok['qty']; ?></td>
+                          <td>Rp <?= number_format($data_stok['harga_beli'], 0, ',', '.'); ?></td>
+                          <td>Rp <?= number_format($data_stok['harga_jual'], 0, ',', '.'); ?></td>
+                        </tr>
+                        <?php
+                      }
+                    }
+              ?>
               
               </tbody>
             </table>

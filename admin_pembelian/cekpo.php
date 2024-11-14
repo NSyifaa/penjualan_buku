@@ -152,8 +152,6 @@
 
                         $harga_datang_display = is_null($harga_datang) || $harga_datang === '' ? '-' : 'Rp. ' . number_format($harga_datang, 0, ',', '.');
                        
-                        $btn_verifikasi = '<a href="verifikasi.php?id=' . $id . '&id_po='.$idpo.'" class="btn btn-sm btn-success">Verifikasi</a>';
-
                         $disabled = ($status == 1) ? 'disabled' : '';
                         ?>
 
@@ -180,10 +178,7 @@
                           <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-idpo="<?=$idpo;?>" data-item="<?=$buku;?>"  data-qty="<?=$data['jumlah'];?>" data-sub="<?=$subtotal;?>" data-qtydtg="<?= $qty_datang_display;?>" <?= $disabled;?>> 
                           <i class="nav-icon fas fa-edit"></i> Edit
                           </button>
-
-
-                            <?=$btn_verifikasi;?>
-                            
+                          <a href="verifikasi.php?id=<?= $id; ?>&id_po=<?=$idpo?> &kd_buku=<?=$kd_buku?>&qty_datang=<?=$qty_datang?>&harga_beli=<?= $data['harga'];?>" class="btn btn-sm btn-success">Verifikasi</a>
                           </td>
                         </tr>
 
