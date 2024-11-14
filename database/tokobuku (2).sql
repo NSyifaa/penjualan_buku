@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 12 Nov 2024 pada 14.24
--- Versi server: 10.4.24-MariaDB
--- Versi PHP: 8.0.19
+-- Host: localhost:3306
+-- Generation Time: Nov 14, 2024 at 03:30 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,22 +24,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_buku`
+-- Table structure for table `tbl_buku`
 --
 
 CREATE TABLE `tbl_buku` (
-  `kd_buku` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `judul_buku` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_kategori` int(11) NOT NULL,
-  `isbn` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tahun` int(11) NOT NULL,
-  `penerbit` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jml_hal` int(11) NOT NULL,
-  `cetakan` int(11) NOT NULL
+  `kd_buku` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `judul_buku` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_kategori` int NOT NULL,
+  `isbn` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tahun` int NOT NULL,
+  `penerbit` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jml_hal` int NOT NULL,
+  `cetakan` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_buku`
+-- Dumping data for table `tbl_buku`
 --
 
 INSERT INTO `tbl_buku` (`kd_buku`, `judul_buku`, `id_kategori`, `isbn`, `tahun`, `penerbit`, `jml_hal`, `cetakan`) VALUES
@@ -60,16 +60,16 @@ INSERT INTO `tbl_buku` (`kd_buku`, `judul_buku`, `id_kategori`, `isbn`, `tahun`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_kategori`
+-- Table structure for table `tbl_kategori`
 --
 
 CREATE TABLE `tbl_kategori` (
-  `id_kategori` int(11) NOT NULL,
-  `kategori` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id_kategori` int NOT NULL,
+  `kategori` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_kategori`
+-- Dumping data for table `tbl_kategori`
 --
 
 INSERT INTO `tbl_kategori` (`id_kategori`, `kategori`) VALUES
@@ -80,16 +80,16 @@ INSERT INTO `tbl_kategori` (`id_kategori`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_margin`
+-- Table structure for table `tbl_margin`
 --
 
 CREATE TABLE `tbl_margin` (
-  `id` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `margin` int(11) NOT NULL
+  `id` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `margin` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_margin`
+-- Dumping data for table `tbl_margin`
 --
 
 INSERT INTO `tbl_margin` (`id`, `margin`) VALUES
@@ -98,21 +98,21 @@ INSERT INTO `tbl_margin` (`id`, `margin`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_pengguna`
+-- Table structure for table `tbl_pengguna`
 --
 
 CREATE TABLE `tbl_pengguna` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_user` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int(11) NOT NULL,
-  `alamat` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kontak` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_user` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int NOT NULL,
+  `alamat` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kontak` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_pengguna`
+-- Dumping data for table `tbl_pengguna`
 --
 
 INSERT INTO `tbl_pengguna` (`id`, `username`, `password`, `nama_user`, `status`, `alamat`, `kontak`) VALUES
@@ -126,18 +126,18 @@ INSERT INTO `tbl_pengguna` (`id`, `username`, `password`, `nama_user`, `status`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_po`
+-- Table structure for table `tbl_po`
 --
 
 CREATE TABLE `tbl_po` (
-  `id_po` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_po` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal` date NOT NULL,
-  `kode_sup` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int(11) NOT NULL
+  `kode_sup` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_po`
+-- Dumping data for table `tbl_po`
 --
 
 INSERT INTO `tbl_po` (`id_po`, `tanggal`, `kode_sup`, `status`) VALUES
@@ -149,22 +149,22 @@ INSERT INTO `tbl_po` (`id_po`, `tanggal`, `kode_sup`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_po_detail`
+-- Table structure for table `tbl_po_detail`
 --
 
 CREATE TABLE `tbl_po_detail` (
-  `id` int(11) NOT NULL,
-  `id_po` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kd_buku` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jumlah` int(11) NOT NULL,
-  `harga` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `qty_dtg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `harga_dtg` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stat` enum('0','1') COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` int NOT NULL,
+  `id_po` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kd_buku` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jumlah` int NOT NULL,
+  `harga` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qty_dtg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `harga_dtg` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stat` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_po_detail`
+-- Dumping data for table `tbl_po_detail`
 --
 
 INSERT INTO `tbl_po_detail` (`id`, `id_po`, `kd_buku`, `jumlah`, `harga`, `qty_dtg`, `harga_dtg`, `stat`) VALUES
@@ -177,20 +177,42 @@ INSERT INTO `tbl_po_detail` (`id`, `id_po`, `kd_buku`, `jumlah`, `harga`, `qty_d
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_supplier`
+-- Table structure for table `tbl_stok`
 --
 
-CREATE TABLE `tbl_supplier` (
-  `kode_sup` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_suplier` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alamat` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kontak_sup` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama_sales` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kontak_sales` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+CREATE TABLE `tbl_stok` (
+  `no_po` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kd_buku` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qty` int NOT NULL,
+  `harga_beli` int NOT NULL,
+  `harga_jual` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tbl_supplier`
+-- Dumping data for table `tbl_stok`
+--
+
+INSERT INTO `tbl_stok` (`no_po`, `kd_buku`, `qty`, `harga_beli`, `harga_jual`) VALUES
+('11112024-PO-1 ', 'A001', 2, 10000, 17000),
+('11112024-PO-1 ', 'A001', 2, 10000, 17000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_supplier`
+--
+
+CREATE TABLE `tbl_supplier` (
+  `kode_sup` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_suplier` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kontak_sup` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_sales` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kontak_sales` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_supplier`
 --
 
 INSERT INTO `tbl_supplier` (`kode_sup`, `nama_suplier`, `alamat`, `kontak_sup`, `nama_sales`, `kontak_sales`) VALUES
@@ -203,62 +225,62 @@ INSERT INTO `tbl_supplier` (`kode_sup`, `nama_suplier`, `alamat`, `kontak_sup`, 
 --
 
 --
--- Indeks untuk tabel `tbl_buku`
+-- Indexes for table `tbl_buku`
 --
 ALTER TABLE `tbl_buku`
   ADD PRIMARY KEY (`kd_buku`);
 
 --
--- Indeks untuk tabel `tbl_kategori`
+-- Indexes for table `tbl_kategori`
 --
 ALTER TABLE `tbl_kategori`
   ADD PRIMARY KEY (`id_kategori`);
 
 --
--- Indeks untuk tabel `tbl_margin`
+-- Indexes for table `tbl_margin`
 --
 ALTER TABLE `tbl_margin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tbl_pengguna`
+-- Indexes for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tbl_po`
+-- Indexes for table `tbl_po`
 --
 ALTER TABLE `tbl_po`
   ADD PRIMARY KEY (`id_po`);
 
 --
--- Indeks untuk tabel `tbl_po_detail`
+-- Indexes for table `tbl_po_detail`
 --
 ALTER TABLE `tbl_po_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tbl_supplier`
+-- Indexes for table `tbl_supplier`
 --
 ALTER TABLE `tbl_supplier`
   ADD PRIMARY KEY (`kode_sup`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_kategori`
+-- AUTO_INCREMENT for table `tbl_kategori`
 --
 ALTER TABLE `tbl_kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_kategori` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_po_detail`
+-- AUTO_INCREMENT for table `tbl_po_detail`
 --
 ALTER TABLE `tbl_po_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
