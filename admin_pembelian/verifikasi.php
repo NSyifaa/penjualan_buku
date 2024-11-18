@@ -37,7 +37,8 @@ if ($qty_datang == NULL || $qty_datang == '') {
 	$update 	 = mysqli_query($koneksi, "UPDATE tbl_po_detail SET stat='$stat' WHERE id='$id'") or die(mysqli_error($koneksi));
 	$tambah_stok = mysqli_query($koneksi, "INSERT INTO tbl_stok VALUES ('$idpo','$kd_buku','$qty_datang','$harga_beli','$harga_jual')") or die(mysqli_error($koneksi));
 
-	$query_cek =  mysqli_query($koneksi, "SELECT stat FROM tbl_po_detail WHERE stat=0")or die(mysqli_error($koneksi));
+	$query_cek =  mysqli_query($koneksi, "SELECT stat FROM tbl_po_detail WHERE stat='0' AND id_po='$idpo'")or die(mysqli_error($koneksi));
+
 	if (mysqli_num_rows($query_cek) == 0) {
 	    mysqli_query($koneksi, "UPDATE tbl_po SET status='$statpo' WHERE id_po='$idpo'") or die(mysqli_error($koneksi));
 	}
