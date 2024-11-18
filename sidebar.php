@@ -35,6 +35,15 @@
             </a>
           </li>
 
+          <li class="nav-item" >
+            <a href="../admin_penjualan" class="nav-link  <?php if($konstruktor=='admin_penjualan'){echo 'active';}?>">
+              <i class="nav-icon fas fa-money-bill-wave"></i>
+              <p>
+               Penjualan
+              </p>
+            </a>
+          </li>
+
            <li class="nav-item <?php if($konstruktor=='admin_master_kategori'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_buku'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_administrator'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_kasir'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_supplier'){echo 'menu-open';}?> <?php if($konstruktor=='admin_master_margin'){echo 'menu-open';}?>">
             <a href="../admin_dashboard" class="nav-link ">
               <i class="nav-icon fas fa-database"></i>
