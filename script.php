@@ -39,6 +39,14 @@
       "responsive": true,
     });
   });
+</script><script>
+  $(function () {
+    $("#example11").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": []
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    
+  });
 </script>
 
 <!-- SweetAlert2 -->
