@@ -246,7 +246,12 @@
                               ?>
                           </tbody>
                       </table>
-
+                      <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-bayar" 
+                      data-total="<?= $total;?>"
+                           
+                            >
+                      <i class="nav-icon fas fa-plus"></i> Bayar
+                      </button>
                     </div>
                 </div>
                 </div>
@@ -316,6 +321,44 @@
       </div>
       <div class="modal-footer justify-content-between-right">
         <button type="submit" name="tambah" class="btn btn-primary" id="btnTambah"><i class="nav-icon fas fa-download"></i> Tambah Data</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-bayar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#091057;">
+        <h5 class="modal-title" style="color: white"><i class="nav-icon fas fa-plus"></i> Tambah Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" role="form" class="form-layout" enctype="multipart/form-data">
+        
+        
+          <input type="text" class="form-control" id="id" name="id" hidden>
+          <input type="text" class="form-control" id="no_po" name="no_po" hidden>
+          <input type="text" class="form-control" id="nomor" name="nomor" hidden>
+          <input type="text" class="form-control" id="kd_buku" name="kd_buku" hidden>
+   
+
+          <div class="form-group">
+            <label for="buku">TOTAL</label>
+            <input type="text" class="form-control" id="total" name="total" readonly>
+          </div>
+            
+          <div class="form-group">
+            <label for="jml">Bayar</label>
+            <input type="number" class="form-control" id="bayat" name="bayat"  placeholder="input uang bayar">    
+          </div>
+        
+      </div>
+      <div class="modal-footer justify-content-between-right">
+        <button type="submit" name="tambah" class="btn btn-primary" id="btnTambah"><i class="nav-icon fas fa-download"></i> Simpan</button>
       </div>
       </form>
     </div>
@@ -413,6 +456,16 @@ if(isset($koneksi, $_POST['hapus'])){
     $(e.currentTarget).find('input[name="buku"]').val(buku);
     $(e.currentTarget).find('input[name="jumlah"]').val(jumlah);
     $(e.currentTarget).find('input[name="hrg"]').val(harga);
+});
+</script>
+  <script type="text/javascript">
+    $('#modal-bayar').on('show.bs.modal', function(e) {
+    // Mendapatkan data dari tombol yang diklik (menggunakan data-atribut)
+   
+    var total = $(e.relatedTarget).data('total');
+
+    // Mengisi data ke dalam form modal
+    $(e.currentTarget).find('input[name="total"]').val(total);
 });
 </script>
 </body>
