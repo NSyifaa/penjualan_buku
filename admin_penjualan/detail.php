@@ -73,7 +73,17 @@
       <div class="container-fluid">
         <div class="row">
          <div class="col-lg-12">
-            <div class="card">
+            <div class="card"> 
+              <?php
+                  $id = $_GET['id'];
+                  $sql_stok = mysqli_query($koneksi, "SELECT nomor, tgl, nama_pel FROM tbl_penjualan WHERE id='$id'") 
+                  or die(mysqli_error($koneksi));
+                  $data = mysqli_fetch_assoc($sql_stok);
+                  $nomor = $data['nomor'];
+                  $tanggal = $data['tgl'];
+                  $nama_pel = $data['nama_pel'];
+
+              ?>
                 <div class="card-header" style="background-color: #091057;">
                 <h3 class="card-title" style="color: white"><i class="nav-icon fas fa-money-bill-wave" style="color: white"></i> Penjualan </h3>
                 </div>
@@ -103,6 +113,7 @@
                           <td><?= $no++ ; ?></td>
                           <td>
                             <?php 
+                              $no_po = $data_stok['no_po']; 
                               $kd_buku = $data_stok['kd_buku']; 
                               $pgl_buku = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'")or die(mysqli_error($koneksi));
                               $data_buku = mysqli_fetch_array($pgl_buku);
@@ -114,7 +125,15 @@
                           <td>Rp <?= number_format($data_stok['harga_jual'], 0, ',', '.'); ?></td>
                           <td>
                             <center>
-                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah">
+                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah" 
+                            data-id="<?= $id;?>"
+                            data-no_po="<?= $no_po;?>"
+                            data-nomor="<?= $nomor;?>"
+                            data-nama_buku="<?= $nama_buku;?>"
+                            data-kd_buku="<?= $kd_buku;?>"
+                            data-stok="<?= $data_stok['qty'];?>"
+                            data-harga="<?= $data_stok['harga_jual'];?>"
+                            >
                                 <i class="nav-icon fas fa-plus"></i> Tambah
                             </button>
                             </center>
@@ -132,27 +151,13 @@
                     </table>
                     </div>
                         <?php
-                        if (!isset($_GET['id'])) {
-                          die("Parameter 'id' tidak ditemukan.");
-                      }
+                       
                       
-                      // Ambil ID dari parameter
-                      $id = $_GET['id'];
                       
                       // Query untuk mendapatkan data berdasarkan ID
-                      $qweri = mysqli_query($koneksi, "SELECT nomor, tgl, nama_pel FROM tbl_penjualan WHERE id='$id'") 
-                          or die(mysqli_error($koneksi));
-                      
-                      // Periksa apakah data ditemukan
-                      if (mysqli_num_rows($qweri) === 0) {
-                          die("Data dengan ID '$id' tidak ditemukan.");
-                      }
                       
                       // Ambil data dari hasil query
-                      $data = mysqli_fetch_assoc($qweri);
-                      $nomor = $data['nomor'];
-                      $tanggal = $data['tgl'];
-                      $nama_pel = $data['nama_pel'];
+                      
                       ?>  
                     
                     <div class="col-lg-6">
@@ -180,19 +185,20 @@
                                 <th>Harga</th>
                                 <th>Subtotal</th>
                                 <th>Diskon</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                           <tbody>
                               <?php
                               $no = 1;
                               // Ambil detail penjualan berdasarkan ID
-                              $sql_panggilpj = mysqli_query($koneksi, "SELECT * FROM tbl_detail_penjualan WHERE id='$id'") or die(mysqli_error($koneksi));
-
+                              $sql_panggilpj = mysqli_query($koneksi, "SELECT * FROM tbl_detail_penjualan WHERE nomor='$nomor'") or die(mysqli_error($koneksi));
+                              $total = 0;
                               if (mysqli_num_rows($sql_panggilpj) > 0) {
-                                  while ($data = mysqli_fetch_array($sql_panggilpj)) {
-                                      $kd_buku = $data['kd_buku'];
+                                  while ($data_pj = mysqli_fetch_array($sql_panggilpj)) {
+                                      $kd_buku = $data_pj['kd_buku'];
                                       $ambilnomor = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'") or die(mysqli_error($koneksi));
-                                      $data_buku = mysqli_fetch_assoc($ambilnomor);
+                                      $data_buku = mysqli_fetch_array($ambilnomor);
                                       $buku = $data_buku['judul_buku'];
                                ?>
                               <tr>
@@ -201,30 +207,41 @@
                                   <td><?= $buku; ?></td>
                                   <td>
                                   <?php
-                                  $qty = $data['qty'];
+                                  $qty = $data_pj['qty'];
                                   echo $qty;
                                   ?>
                                   </td>
                                   <td>
                                   <?php 
-                                      $harga = $data['harga'];
+                                      $harga = $data_pj['harga'];
                                       echo "Rp. " . number_format($harga, 0, ',', '.');
                                   ?>
                                   </td>
                                   <td>
                                   <?php
-                                      $subtotal = $jml * $harga;
+                                      $subtotal = $qty * $harga;
                                       echo "Rp. " . number_format($subtotal, 0, ',', '.');
                                     
                                       $total += $subtotal;
                                       ?>
                                   </td>
-                                  <td><?= $data['diskon']; ?></td>
+                                  <td><?= $data_pj['diskon']; ?></td>
+                                  <td>
+                                  <form action="" method="post" role="form" class="form-layout" enctype="multipart/form-data">
+
+                                  <input type="text" class="form-control" id="id" name="idpj" value="<?= $id;?>" hidden>
+                                  <input type="text" class="form-control" id="qty" name="qty" value="<?= $data_pj['qty'];?>" hidden>
+                                  <input type="text" class="form-control" id="id" name="id" value="<?= $data_pj['id'];?>" hidden>
+                                  <input type="text" class="form-control" id="kd_buku" name="kd_buku" value="<?= $data_pj['kd_buku'];?>" hidden>
+                                  <button type="submit" name="hapus" class="btn btn-danger" id="hapus"><i class="nav-icon fas fa-trash"></i> Cancel</button>
+                                  </form>
+
+                                  </td>
                               </tr>
                               <?php
                                   }
                               } else {
-                                  echo "<tr><td colspan='7' align='center'><h6>Tidak ditemukan Data detail penjualan</h6></td></tr>";
+                                  echo "<tr><td colspan='8' align='center'><h6>Tidak ditemukan Data detail penjualan</h6></td></tr>";
                               }
                               ?>
                           </tbody>
@@ -269,11 +286,12 @@
       <div class="modal-body">
         <form action="" method="post" role="form" class="form-layout" enctype="multipart/form-data">
         
-        <div class="form-group">
-          <label for="nota">Nomor Nota</label>
-          <input type="text" class="form-control" id="id" name="id" value="<?php echo $nomor_baru; ?>" readonly>
-          <input type="text" class="form-control" id="id2" name="id2" hidden>
-      </div>
+        
+          <input type="text" class="form-control" id="id" name="id" hidden>
+          <input type="text" class="form-control" id="no_po" name="no_po" hidden>
+          <input type="text" class="form-control" id="nomor" name="nomor" hidden>
+          <input type="text" class="form-control" id="kd_buku" name="kd_buku" hidden>
+   
 
           <div class="form-group">
             <label for="buku">Data Buku</label>
@@ -282,7 +300,7 @@
             
           <div class="form-group">
             <label for="jumlah">stok</label>
-            <input type="number" class="form-control" id="jumlah" name="jumlah" placeholder="input jumlah buku" required>
+            <input type="number" class="form-control" id="jumlah" name="jumlah" readonly>
           </div>
 
           <div class="form-group">
@@ -291,59 +309,111 @@
         </div>
 
           <div class="form-group">
-            <label for="kode">Nama Buku</label>
-            <input type="text" class="form-control" id="nama" name="nama"  placeholder="input nama buku" required>
-          
-          </div>
-
-          <div class="form-group">
             <label for="jml">QTY</label>
-            <input type="number" class="form-control" id="qty" name="qty"  placeholder="input jumlah buku" required>    
+            <input type="number" class="form-control" id="qty" name="qty"  placeholder="input jumlah buku">    
           </div>
-
-          <div class="form-group">
-            <label for="jml">Harga</label>
-            <input type="number" class="form-control" id="harga" name="harga"  placeholder="input Harga buku" required>
-          </div>
- 
         
-          <div class="form-group">
-            <label for="diskon">Diskon (%)</label>
-            <input type="number" class="form-control" id="diskon" name="diskon" placeholder="input diskon jika ada" min="0" max="100" value="0">
-          </div>
-
-        
-        </form>
       </div>
       <div class="modal-footer justify-content-between-right">
         <button type="submit" name="tambah" class="btn btn-primary" id="btnTambah"><i class="nav-icon fas fa-download"></i> Tambah Data</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
 
-<!-- REQUIRED SCRIPTS -->
+<!-- REQUIRED SC[RIPTS -->
+<?php
+if(isset($koneksi, $_POST['tambah'])){
+  //tampung nilai inputan
+  
+  $id       = trim(mysqli_escape_string($koneksi, $_POST['id']));
+  $stok     = trim(mysqli_escape_string($koneksi, $_POST['jumlah']));
+  $qty      = trim(mysqli_escape_string($koneksi, $_POST['qty']));
+  if ($stok < $qty) {
+    echo '
+    <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+    <script>
+    swal("Peringatan", "Stok kurang", "warning");
 
+    setTimeout(function(){
+        window.location.href ="detail.php?id='.$id.'";
+    }, 2000);
+    </script>';
+  }else{
+    $no_po    = trim(mysqli_escape_string($koneksi, $_POST['no_po']));
+    $nomor    = trim(mysqli_escape_string($koneksi, $_POST['nomor']));
+    $kodebuku = trim(mysqli_escape_string($koneksi, $_POST['kd_buku']));
+    $harga    = trim(mysqli_escape_string($koneksi, $_POST['hrg']));
+    $subtotal = $qty * $harga;
+    $stok2    = $stok - $qty;
+    $diskon = 0;
+    $querycek = mysqli_query($koneksi, "INSERT INTO tbl_detail_penjualan VALUES (NULL,'$nomor', '$kodebuku', '$qty', '$harga', '$subtotal', '$diskon')") or die(mysqli_error($koneksi));
+    $queryup = mysqli_query($koneksi, "UPDATE tbl_stok SET qty='$stok2' WHERE no_po='$no_po' AND kd_buku='$kodebuku'") or die(mysqli_error($koneksi));
+    echo '
+    <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+    <script>
+    swal("Berhsil", "tambah barang berhasil", "success");
+
+    setTimeout(function(){
+        window.location.href ="detail.php?id='.$id.'";
+    }, 2000);
+    </script>';
+    }
+  }
+
+  //cancel
+if(isset($koneksi, $_POST['hapus'])){
+  //tampung nilai inputan
+  
+  $idpj       = trim(mysqli_escape_string($koneksi, $_POST['idpj']));
+  $id       = trim(mysqli_escape_string($koneksi, $_POST['id']));
+  $qty       = trim(mysqli_escape_string($koneksi, $_POST['qty']));
+  $kodebuku       = trim(mysqli_escape_string($koneksi, $_POST['kd_buku']));
+  $querydelete = mysqli_query($koneksi, "DELETE FROM tbl_detail_penjualan WHERE id='$id'") or die(mysqli_error($koneksi));
+
+  $sqlstok = mysqli_query($koneksi, "SELECT qty FROM tbl_stok WHERE kd_buku='$kodebuku'") or die(mysqli_error($koneksi));
+  $data_stok = mysqli_fetch_array($sqlstok);
+  $stok = $data_stok['qty'];
+  $stok2    = $stok + $qty;
+
+  $queryup = mysqli_query($koneksi, "UPDATE tbl_stok SET qty='$stok2' WHERE kd_buku='$kodebuku'") or die(mysqli_error($koneksi));
+  echo '
+    <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+    <script>
+    swal("Berhsil", "Barang tidak jadi ditambah", "success");
+
+    setTimeout(function(){
+        window.location.href ="detail.php?id='.$idpj.'";
+    }, 2000);
+    </script>';
+  }
+  
+?>
 <!-- jQuery -->
 <?php
   include '../script.php';
   ?>
-  <!-- <script type="text/javascript">
-       $('#modal-tambah').on('show.bs.modal', function(e) {
+  <script type="text/javascript">
+    $('#modal-tambah').on('show.bs.modal', function(e) {
     // Mendapatkan data dari tombol yang diklik (menggunakan data-atribut)
-    var buku = $(e.relatedTarget).data('buku');
-    var jumlah = $(e.relatedTarget).data('jumlah');
-    var harga = $(e.relatedTarget).data('harga');
     var id = $(e.relatedTarget).data('id');
+    var no_po = $(e.relatedTarget).data('no_po');
+    var nomor = $(e.relatedTarget).data('nomor');
+    var kd_buku = $(e.relatedTarget).data('kd_buku');
+    var buku = $(e.relatedTarget).data('nama_buku');
+    var jumlah = $(e.relatedTarget).data('stok');
+    var harga = $(e.relatedTarget).data('harga');
 
     // Mengisi data ke dalam form modal
+    $(e.currentTarget).find('input[name="id"]').val(id);
+    $(e.currentTarget).find('input[name="no_po"]').val(no_po);
+    $(e.currentTarget).find('input[name="nomor"]').val(nomor);
+    $(e.currentTarget).find('input[name="kd_buku"]').val(kd_buku);
     $(e.currentTarget).find('input[name="buku"]').val(buku);
     $(e.currentTarget).find('input[name="jumlah"]').val(jumlah);
-    $(e.currentTarget).find('input[name="id"]').val(id);
     $(e.currentTarget).find('input[name="hrg"]').val(harga);
-    $(e.currentTarget).find('input[name="id"]').val(id);
-    $(e.currentTarget).find('input[name="id2"]').val(id);
 });
-</script> -->
+</script>
 </body>
 </html>
