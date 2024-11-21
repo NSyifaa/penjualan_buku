@@ -70,7 +70,7 @@ if (isset($koneksi, $_POST['tambah'])) {
     ?>
     <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
     <script>
-    swal("Berhasil", "Data PO sudah Berhasil ditambah", "success");
+    swal("Berhasil", "Data Penjualan sudah Berhasil ditambah", "success");
 
     setTimeout(function(){
         window.location.href = "../admin_penjualan";

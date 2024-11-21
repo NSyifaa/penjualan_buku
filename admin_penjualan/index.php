@@ -97,7 +97,7 @@
                         <tbody>
                             <?php
                             $no=1;
-                            $sql_panggil = mysqli_query($koneksi, "SELECT * FROM tbl_penjualan ORDER BY  nomor ASC") or die(mysqli_error($koneksi));
+                            $sql_panggil = mysqli_query($koneksi, "SELECT * FROM tbl_penjualan ORDER BY  nomor DESC") or die(mysqli_error($koneksi));
 
 
                                 if(mysqli_num_rows($sql_panggil) > 0)

@@ -90,14 +90,14 @@
                 <div class="card-body">
                 <a href="../admin_penjualan" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                     <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                       <tr>
-                      <th>No</th>
+                     
                       <th>Data Buku</th>
                       <th>Qty</th>
-                      <th>Harga Jual</th>
+                      <th>Harga</th>
                       <th><center>Aksi</center></th>
                       </tr>
                     </thead>
@@ -110,7 +110,7 @@
                       while ($data_stok = mysqli_fetch_array($sql_panggilstok)) {
                         ?>
                         <tr>
-                          <td><?= $no++ ; ?></td>
+                         
                           <td>
                             <?php 
                               $no_po = $data_stok['no_po']; 
@@ -160,8 +160,8 @@
                       
                       ?>  
                     
-                    <div class="col-lg-6">
-                    <table class="table table-bordered table-striped">
+                    <div class="col-lg-7">
+                    <table class="table table-sm table-bordered table-striped" style="width: 100%; table-layout: fixed;">
                             <tr>
                                 <td width="35%">Nomor Nota</td>
                                 <td><b><?= $nomor; ?></b></td>
@@ -212,7 +212,7 @@
                                   <td>
                                   <?php 
                                       $harga = $data_pj['harga'];
-                                      echo "Rp. " . number_format($harga, 0, ',', '.');
+                                      echo  number_format($harga, 0, ',', '.');
                                   ?>
                                   </td>
                                   <td>
@@ -240,12 +240,13 @@
                                   }
                                   echo"
                                   <tr>
-                                  <td colspan=\"4\" align=\"center\" style=\"background-color: #FFD700 ;\"><h6 >Total Harga</h6>
+                                  <td colspan=\"3\" align=\"center\" style=\"background-color: #FFFFFF ;\"><h5 ><b>Total Harga</h5>
+                                  
                                  
                                   </td>
-                                  <td style=\"background-color: #FFD700 ;\">
+                                  <td colspan=\"2\" align=\"center\" style=\"background-color: #FFFFFF;\" style=\"background-color: #FFD700 ;\">
                                  
-                                  Rp. ". number_format($total, 0, ',', '.')."
+                                 <h5><b> Rp. ". number_format($total, 0, ',', '.')." </h5>
                                   </td>
                                   </tr>";
                               } else {
