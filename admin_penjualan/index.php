@@ -87,8 +87,8 @@
                             <th>Tanggal</th>
                             <th>Nomor Nota</th>
                             <th>Nama Pelanggan</th>
-                            <th>Total</th>
-                            <th>Bukti</th>
+                            <th>Jumlah Bayar</th>
+                            <th>Kembali</th>
                             <th><center>Status</center></th>
                             <th width="30%"><center>Aksi</center></th>
                             
@@ -120,19 +120,41 @@
                                 <?=$data['nama_pel'];?>
                                 </td>
                                 <td>
-                                <?=$data['total'];?>
+                                <?php 
+                                      $jml = $data['jml_byr'];
+                                      echo "Rp. " . number_format($jml, 0, ',', '.');
+                                  ?>
+                                
                                 </td>
                                 <td>
-                                <?=$data['bukti'];?>
+                                <?php 
+                                      $kembali = $data['kembali'];
+                                      echo "Rp. " . number_format($kembali, 0, ',', '.');
+                                  ?>
                                 <td>
                                 <?php
                                     // Mengubah nilai status menjadi deskripsi
                                     if ($data['status'] == 0) {
-                                        echo "Barang Kosong";
+                                      ?>
+                                      <center>
+                                        <button class="btn btn-sm btn-warning">Barang Kosong
+                                        </button>
+                                      </center>
+                                        <?php
                                     } elseif ($data['status'] == 1) {
-                                        echo "Belum Dibayar";
+                                      ?>
+                                      <center>
+                                        <button class="btn btn-sm btn-danger">Belum dibayar
+                                        </button>
+                                      </center>
+                                        <?php
                                     } elseif ($data['status'] == 2) {
-                                        echo "Lunas";
+                                      ?>
+                                      <center>
+                                        <button class="btn btn-sm btn-primary">Lunas
+                                        </button>
+                                      </center>
+                                        <?php
                                     } else {
                                         echo "Status Tidak Diketahui"; // Jaga-jaga jika ada nilai status selain 0, 1, atau 2
                                     }
@@ -140,12 +162,20 @@
                                 </td>
                                 <td> 
                                     <center>
-                                   
+                                    <div class="d-flex justify-content-center gap-2">
                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-id="<?=$data['id'];?>"><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
                                    <a href="detail.php?id=<?=$data['id'];?>" 
                                    class= "btn btn-sm btn-info"><i class="nav-icon fas fa-edit"></i> Detail </a>
-                                    </center>
+                                    
+                                    <?php if ($data['status'] === '2'): ?>
+                                      <!-- Tombol Cetak Nota -->
+                                      <a href="cetak.php?id=<?= $data['id']; ?>" target="_blank" class="btn btn-sm btn-success">
+                                          <i class="nav-icon fas fa-print"></i> Cetak Nota
+                                      </a>
+                                  <?php endif; ?>
+                                  </center>
+                                    </div>
                                 </td>
                                 </tr>  
                                 <?php

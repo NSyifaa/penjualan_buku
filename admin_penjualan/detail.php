@@ -134,7 +134,7 @@
                             data-stok="<?= $data_stok['qty'];?>"
                             data-harga="<?= $data_stok['harga_jual'];?>"
                             >
-                                <i class="nav-icon fas fa-plus"></i> Tambah
+                                <i class="nav-icon fas fa-plus"></i> 
                             </button>
                             </center>
 
@@ -179,7 +179,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nomor Nota</th>
                                 <th>Nama Buku</th>
                                 <th>Qty</th>
                                 <th>Harga</th>
@@ -203,7 +202,6 @@
                                ?>
                               <tr>
                                   <td><?= $no++; ?></td>
-                                  <td><?= $nomor; ?></td>
                                   <td><?= $buku; ?></td>
                                   <td>
                                   <?php
@@ -220,7 +218,7 @@
                                   <td>
                                   <?php
                                       $subtotal = $qty * $harga;
-                                      echo "Rp. " . number_format($subtotal, 0, ',', '.');
+                                      echo number_format($subtotal, 0, ',', '.');
                                     
                                       $total += $subtotal;
                                       ?>
@@ -233,26 +231,36 @@
                                   <input type="text" class="form-control" id="qty" name="qty" value="<?= $data_pj['qty'];?>" hidden>
                                   <input type="text" class="form-control" id="id" name="id" value="<?= $data_pj['id'];?>" hidden>
                                   <input type="text" class="form-control" id="kd_buku" name="kd_buku" value="<?= $data_pj['kd_buku'];?>" hidden>
-                                  <button type="submit" name="hapus" class="btn btn-danger" id="hapus"><i class="nav-icon fas fa-trash"></i> Cancel</button>
+                                  <button type="submit" name="hapus" class="btn btn-danger" id="hapus"><i class="nav-icon fas fa-trash"></i></button>
                                   </form>
 
                                   </td>
                               </tr>
                               <?php
                                   }
+                                  echo"
+                                  <tr>
+                                  <td colspan=\"4\" align=\"center\" style=\"background-color: #FFD700 ;\"><h6 >Total Harga</h6>
+                                 
+                                  </td>
+                                  <td style=\"background-color: #FFD700 ;\">
+                                 
+                                  Rp. ". number_format($total, 0, ',', '.')."
+                                  </td>
+                                  </tr>";
                               } else {
                                   echo "<tr><td colspan='8' align='center'><h6>Tidak ditemukan Data detail penjualan</h6></td></tr>";
                               }
                               ?>
                           </tbody>
                       </table>
-                      <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-bayar" 
-                      data-total="<?= $total;?>"
-                           
-                            >
-                      <i class="nav-icon fas fa-plus"></i> Bayar
+                      <div class="d-flex justify-content-end">
+                      <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-bayar" 
+                          data-total="<?= $total; ?>" data-id="<?= $id; ?>" data-nomor="<?= $nomor; ?>">
+                          <i class="fas fa-hand-holding-usd"></i> Bayar
                       </button>
-                    </div>
+                  </div>
+                 </div>
                 </div>
                 </div>
 
@@ -341,7 +349,7 @@
         
         
           <input type="text" class="form-control" id="id" name="id" hidden>
-          <input type="text" class="form-control" id="no_po" name="no_po" hidden>
+          <input type="text" class="form-control" id="no_po" name="no_po" hidden >
           <input type="text" class="form-control" id="nomor" name="nomor" hidden>
           <input type="text" class="form-control" id="kd_buku" name="kd_buku" hidden>
    
@@ -353,12 +361,12 @@
             
           <div class="form-group">
             <label for="jml">Bayar</label>
-            <input type="number" class="form-control" id="bayat" name="bayat"  placeholder="input uang bayar">    
+            <input type="number" class="form-control" id="bayar" name="bayar"  placeholder="input uang bayar">    
           </div>
         
       </div>
       <div class="modal-footer justify-content-between-right">
-        <button type="submit" name="tambah" class="btn btn-primary" id="btnTambah"><i class="nav-icon fas fa-download"></i> Simpan</button>
+        <button type="submit" name="bayaraja" class="btn btn-primary" id="btnTambah"><i class="nav-icon fas fa-download"></i> Simpan</button>
       </div>
       </form>
     </div>
@@ -431,6 +439,43 @@ if(isset($koneksi, $_POST['hapus'])){
     }, 2000);
     </script>';
   }
+
+  //bayar
+  if (isset($koneksi, $_POST['bayaraja'])) {
+    // Ambil data dari form
+    $id = trim(mysqli_escape_string($koneksi, $_POST['id']));
+    $nomor = trim(mysqli_escape_string($koneksi, $_POST['nomor']));
+    $total =intval(trim(mysqli_escape_string($koneksi, $_POST['total'])));
+    $bayar = intval(trim(mysqli_escape_string($koneksi, $_POST['bayar'])));
+
+    // Kalkulasi kembalian
+    $kembalian = $bayar - $total;
+    
+    if ($bayar < $total) {
+         echo '
+        <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+        <script>
+        swal("Peringatan", "Uang yang dibayar kurang!", "warning");
+
+        setTimeout(function(){
+          window.location.href ="detail.php?id=' . $id . '";
+        }, 2000);
+       </script>';
+     } else {
+      // Update tabel penjualan dengan status pembayaran
+        $queryUpdate = mysqli_query($koneksi, "UPDATE tbl_penjualan SET  jml_byr='$bayar', kembali='$kembalian', status='2' WHERE id='$id'") or die(mysqli_error($koneksi));
+         echo '
+    <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
+        <script>
+        swal("Berhasil", "Pembayaran berhasil disimpan!", "success");
+
+       setTimeout(function(){
+           window.location.href ="../admin_penjualan";
+         }, 2000);
+        </script>';
+    }
+}
+
   
 ?>
 <!-- jQuery -->
@@ -462,11 +507,17 @@ if(isset($koneksi, $_POST['hapus'])){
     $('#modal-bayar').on('show.bs.modal', function(e) {
     // Mendapatkan data dari tombol yang diklik (menggunakan data-atribut)
    
+    var id = $(e.relatedTarget).data('id');
+    var nomor = $(e.relatedTarget).data('nomor');
     var total = $(e.relatedTarget).data('total');
 
     // Mengisi data ke dalam form modal
-    $(e.currentTarget).find('input[name="total"]').val(total);
+    // $(e.currentTarget).find('input[name="total"]').val(total);
+    $(e.currentTarget).find('input[name="id"]').val(id);
+     $(e.currentTarget).find('input[name="nomor"]').val(nomor);
+     $(e.currentTarget).find('input[name="total"]').val(total);
 });
 </script>
+
 </body>
 </html>

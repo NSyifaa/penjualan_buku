@@ -37,8 +37,8 @@ if (isset($koneksi, $_POST['tambah'])) {
     $tanggal_format = date("dmY"); // Format tanggal untuk no_po
     $kode = "MYG"; // Kode tetap untuk penanda PO
     $nama = trim(mysqli_real_escape_string($koneksi, $_POST['nama'])); // Ambil kode supplier dari form
-    $total='0';
-    $bukti='0';
+    $jml='0';
+    $kembali='0';
 
     $status = 0; // Status otomatis "1" untuk PO
 
@@ -64,7 +64,7 @@ if (isset($koneksi, $_POST['tambah'])) {
     $no_po_baru = "$tanggal_format-$kode-$no_urut";
 
     // Eksekusi query untuk menambahkan data PO
-    $tambahdata = mysqli_query($koneksi, "INSERT INTO tbl_penjualan (id, tgl,nomor, nama_pel, total, bukti, status) VALUES ('$uuid','$tanggal','$no_po_baru',  '$nama', '$total', '$bukti', '$status')") 
+    $tambahdata = mysqli_query($koneksi, "INSERT INTO tbl_penjualan (id, tgl,nomor, nama_pel, jml_byr, kembali, status) VALUES ('$uuid','$tanggal','$no_po_baru',  '$nama', '$jml', '$kembali', '$status')") 
         or die(mysqli_error($koneksi));
 
     ?>
