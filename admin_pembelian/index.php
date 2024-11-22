@@ -184,9 +184,9 @@
                               <?php
                              }else {
                                 ?>
-                            <a href="datapo.php?id_po=<?=$data['id_po'];?>" target="_blank" class= "btn btn-sm btn-warning"><i class="nav-icon fas fa-file"></i> Dok.PO</a>
+                            <a href="datapo.php?id_po=<?=$data['id_po'];?>" target="_blank" class= "btn btn-sm btn-success"><i class="nav-icon fas fa-file"></i> Dok.PO</a>
                               
-                            <a href="cekpo.php?id_po=<?=$data['id_po'];?>"  class= "btn btn-sm btn-secondary"><i class="nav-icon fas fa-file"></i> Cek PO</a>
+                            <a href="cekpo.php?id_po=<?=$data['id_po'];?>"  class= "btn btn-sm btn-warning"><i class="nav-icon fas fa-file"></i> Cek PO</a>
                               
                               <?php
 

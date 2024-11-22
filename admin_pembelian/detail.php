@@ -82,7 +82,7 @@
                   $nama_sup =  $arrqweri['nama_suplier'];
 
               ?>
-              <a href="../admin_pembelian" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
+              <a href="../admin_pembelian" class="btn btn-secondary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
               <br>
               <br>
                 <div class="row">
@@ -163,7 +163,7 @@
                           
                           <td>
                             <center>
-                          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah"  data-kd_buku="<?=$data['kd_buku'];?>" data-nama="<?=$data['judul_buku'];?>" data-id_po="<?= $idpo;?>" <?=$disabled;?>><i class="nav-icon fas fa-plus"></i> Tambah</button>
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-tambah"  data-kd_buku="<?=$data['kd_buku'];?>" data-nama="<?=$data['judul_buku'];?>" data-id_po="<?= $idpo;?>" <?=$disabled;?>><i class="nav-icon fas fa-plus"></i> Tambah</button>
                             </center>
 
                             
@@ -280,7 +280,7 @@
                   <?php
                   // Tambahkan kondisi untuk menampilkan tombol hanya jika status belum selesai (contoh: status != 2)
                   if ($status < 2) {
-                      echo '<a href="submit.php?id_po=' . $idpo . '" name="submit" class="btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a>';
+                      echo '<a href="submit.php?id_po=' . $idpo . '&total='.$total.'" name="submit" class="btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a>';
                   }
                   ?>
                   <!-- <a href="submit.php?id_po=<?=$idpo;?>" name="submit" class= "btn btn-sm btn-danger"><i class="nav-icon fas fa-upload"></i> Submit</a> -->
