@@ -88,7 +88,7 @@
                 <h3 class="card-title" style="color: white"><i class="nav-icon fas fa-money-bill-wave" style="color: white"></i> Penjualan </h3>
                 </div>
                 <div class="card-body">
-                <a href="../admin_penjualan" class="btn btn-primary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
+                <a href="../admin_penjualan" class="btn btn-secondary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
                 <div class="row">
                     <div class="col-lg-5">
                     <table id="example1" class="table table-bordered table-striped table-sm">
@@ -125,7 +125,7 @@
                           <td>Rp <?= number_format($data_stok['harga_jual'], 0, ',', '.'); ?></td>
                           <td>
                             <center>
-                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-tambah" 
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-tambah" 
                             data-id="<?= $id;?>"
                             data-no_po="<?= $no_po;?>"
                             data-nomor="<?= $nomor;?>"
