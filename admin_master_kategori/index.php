@@ -85,7 +85,7 @@
               <!-- /.card-header -->
               <div class="card-body">
               <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-tambah"><i class="nav-icon fas fa-plus"></i> Tambah Data</button>
-              <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-reset" ><i class="nav-icon fas fa-sync"></i> Reset Data</button>
+              <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-reset" ><i class="nav-icon fas fa-sync"></i> Reset Data</button>
 
                 <table id="example2" class="table table-bordered table-striped">
                   <thead>
@@ -118,7 +118,7 @@
                             <center>
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-id_kategori=<?=$data['id_kategori'];?>><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
-                          <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#modal-edit" data-id_kategori="<?=$data['id_kategori'];?>" data-kategori="<?= $data['kategori'];?>" > 
+                          <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-id_kategori="<?=$data['id_kategori'];?>" data-kategori="<?= $data['kategori'];?>" > 
                           <i class="nav-icon fas fa-edit"></i> Edit
                             </button>
                             </center>
