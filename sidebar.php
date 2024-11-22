@@ -27,19 +27,19 @@
           </li>
 
           <li class="nav-item" >
-            <a href="../admin_stok" class="nav-link  <?php if($konstruktor=='admin_stok'){echo 'active';}?>">
-              <i class="nav-icon fas fa-book"></i>
+            <a href="../admin_penjualan" class="nav-link  <?php if($konstruktor=='admin_penjualan'){echo 'active';}?>">
+              <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
-               Stok Buku
+               Penjualan
               </p>
             </a>
           </li>
 
           <li class="nav-item" >
-            <a href="../admin_penjualan" class="nav-link  <?php if($konstruktor=='admin_penjualan'){echo 'active';}?>">
-              <i class="nav-icon fas fa-money-bill-wave"></i>
+            <a href="../admin_stok" class="nav-link  <?php if($konstruktor=='admin_stok'){echo 'active';}?>">
+              <i class="nav-icon fas fa-book"></i>
               <p>
-               Penjualan
+               Stok Buku
               </p>
             </a>
           </li>
@@ -52,9 +52,8 @@
                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+
             <ul class="nav nav-treeview">
-
-
 
               <li class="nav-item">
                 <a href="../admin_master_kategori" class="nav-link <?php if($konstruktor=='admin_master_kategori'){echo 'active';}?> ">
@@ -102,10 +101,37 @@
               </p>
             </a>
           </li>
-
             </ul>
           </li>
-          
+
+          <li class="nav-item <?php if($konstruktor=='admin_laporan_beli'){echo 'menu-open';}?> <?php if($konstruktor=='admin_laporan_detail'){echo 'menu-open';}?>">
+            <a href="../admin_dashboard" class="nav-link ">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>
+               Laporan
+               <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            
+            <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="../admin_laporan_beli" class="nav-link <?php if($konstruktor=='admin_laporan_beli'){echo 'active';}?>">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+               Laporan Pembelian
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../admin_laporan_detail" class="nav-link <?php if($konstruktor=='admin_laporan_detail'){echo 'active';}?>">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+               Laporan Detail Beli
+              </p>
+            </a>
+          </li>
+            </ul>
           
           <li class="nav-item">
             <a href="../ganti_pass" class="nav-link <?php if($konstruktor=='ganti_pass'){echo 'active';}?>">
