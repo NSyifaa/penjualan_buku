@@ -151,7 +151,7 @@
                                     } elseif ($data['status'] == 2) {
                                       ?>
                                       <center>
-                                        <button class="btn btn-sm btn-primary">Lunas
+                                        <button class="btn btn-sm btn-success">Lunas
                                         </button>
                                       </center>
                                         <?php

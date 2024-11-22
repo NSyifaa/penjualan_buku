@@ -1,156 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>58mm Thermal Printer</title>
-    
-    <style>
-        /* Set width to 58mm */
-        body, html {
-            width: 58mm;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .receipt {
-            width: 100%;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .receipt h2, .receipt h4 {
-            margin: 0;
-            padding: 0;
-        }
-
-        .receipt p {
-            margin: 5px 0;
-        }
-
-        .line {
-            border-top: 1px dashed #000;
-            margin: 10px 0;
-        }
-
-        .total {
-            font-weight: bold;
-        }
-
-        @media print {
-            /* Remove margins when printing */
-            @page {
-                margin: 0;
-            }
-
-            body {
-                margin: 0;
-            }
-
-            .no-print {
-                display: none;
-            }
-        }
-    </style>
-</head>
 <?php
 require_once '../database/koneksi.php';
+require_once '../assets_adminlte/dist/fpdf/fpdf.php';
 
-
-
+// Ambil data id dari GET request
 $id = $_GET['id'];
-$sql_stok = mysqli_query($koneksi, "SELECT nomor, tgl, nama_pel FROM tbl_penjualan WHERE id='$id'") or die(mysqli_error($koneksi));
-$data = mysqli_fetch_assoc($sql_stok);
-$nomor = $data['nomor'];
-$tanggal = $data['tgl'];
-$nama_pel = $data['nama_pel'];
 
+// Query untuk mendapatkan detail penjualan
+$query_penjualan = mysqli_query($koneksi, "SELECT * FROM tbl_penjualan WHERE id='$id'") or die(mysqli_error($koneksi));
+$query_penjualan_detail = mysqli_query($koneksi, "SELECT * FROM tbl_detail_penjualan WHERE nomor=(SELECT nomor FROM tbl_penjualan WHERE id='$id')") or die(mysqli_error($koneksi));
+$penjualan_header = mysqli_fetch_assoc($query_penjualan);
 
-$sql_panggilpj = mysqli_query($koneksi, "SELECT * FROM tbl_detail_penjualan WHERE nomor='$nomor'") or die(mysqli_error($koneksi));
+// Menyiapkan Kelas PDF
+class PDF extends FPDF
+{
+    // Page header
+    function Header()
+    {
+        $this->Image("../auth/assets/img/logobk.png", 14, 6, 30);
+        $this->SetFont('Times', 'B', 12);
+        $this->Ln(30);
+        $this->Cell(4);
+        $this->Cell(30, 6, 'TOKO BUKU MAYANG', 0, 1, 'C');
+        $this->SetFont('Times', '', 7);
+        $this->Cell(4);
+        $this->Cell(30, 4, "Jl. Raya Ajibarang, Blok Rokan 17", 0, 1, 'C');
+        $this->Cell(4);
+        $this->Cell(30, 4, "Kab. Banyumas, WA(081227404040)", 0, 1, 'C');
+        $this->Cell(4);
+        $this->Cell(30, 4, "NPWP : 091290.209.09-11.0012", 0, 1, 'C');
+        $this->line(3, 60, 55, 60);
+        $this->Ln(5);
+    }
+
+    // Page footer
+    function Footer()
+    {
+        $this->SetY(-15);
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+    }
+}
+
+// Membuat PDF
+$pdf = new PDF('P', 'mm', array(58, 210)); // Ukuran thermal printer 58mm
+$pdf->AliasNbPages();
+$pdf->AddPage();
+$pdf->SetFont('Times', '', 7);
+
+// Header informasi Penjualan
+$pdf->Cell(-8);
+$pdf->Cell(20, 4, "Tgl Penjualan", 0, 0, 'L');
+$pdf->Cell(3, 4, ":", 0, 0, 'L');
+$pdf->Cell(20, 4, $penjualan_header['tgl'], 0, 1, 'L');
+
+$pdf->Cell(-8);
+$pdf->Cell(20, 4, "No Nota", 0, 0, 'L');
+$pdf->Cell(3, 4, ":", 0, 0, 'L');
+$pdf->Cell(20, 4, $penjualan_header['nomor'], 0, 1, 'L');
+
+$pdf->Cell(-8);
+$pdf->Cell(20, 4, "Pelanggan", 0, 0, 'L');
+$pdf->Cell(3, 4, ":", 0, 0, 'L');
+$pdf->Cell(20, 4, $penjualan_header['nama_pel'], 0, 1, 'L');
+
+$pdf->line(3, 80, 55, 80);
+$pdf->Ln(9);
+
+// Header tabel
+$pdf->SetFont('Times', 'B', 7);
+$pdf->Cell(-8);
+$pdf->Cell(5, 4, "No", 0, 0, 'C');
+$pdf->Cell(20, 4, "Nama Buku", 0, 0, 'C');
+$pdf->Cell(10, 4, "Qty", 0, 0, 'C');
+$pdf->Cell(10, 4, "Harga", 0, 0, 'C');
+$pdf->Cell(10, 4, "Subtotal", 0, 1, 'C');
+
+// Isi tabel
+$pdf->SetFont('Times', '', 7);
+$no = 1;
 $total = 0;
+
+while ($data = mysqli_fetch_array($query_penjualan_detail)) {
+    $kd_buku = $data['kd_buku'];
+    $qty = $data['qty'];
+    $harga = $data['harga'];
+    $subtotal = $qty * $harga;
+    $total += $subtotal;
+
+    // Ambil nama buku
+    $query_buku = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'") or die(mysqli_error($koneksi));
+    $buku = mysqli_fetch_assoc($query_buku)['judul_buku'];
+
+    $pdf->Cell(-8);
+    $pdf->Cell(5, 4, $no++, 0, 0, 'C');
+    $pdf->Cell(21, 4, $buku, 0, 0, 'L');
+    $pdf->Cell(7, 4, $qty, 0, 0, 'C');
+    $pdf->Cell(10, 4, number_format($harga), 0, 0, 'C');
+    $pdf->Cell(10, 4, number_format($subtotal), 0, 1, 'C');
+}
+
+// Total
+$pdf->Ln(3);
+$pdf->SetFont('Times', 'B', 7);
+$pdf->Cell(-8);
+$pdf->Cell(40, 4, "TOTAL", 0, 0, 'L');
+$pdf->Cell(12, 4, number_format($total), 0, 1, 'R');
+
+$pdf->Output();
 ?>
-
-
-<body onload="window.print();">
-    <div class="receipt">
-       <div class="row">
-        <div class="col-12">
-         <center>
-         <div class="header">
-        <img src="../auth/assets/img/logobk.png" width="150px" height="100px">
-            <h3>Toko Buku Mayang</h3>
-            <p>Alamat: Jl. Contoh No. 123, Kota</p>
-            <p><strong>Nomor Nota: <?= $nomor; ?></strong></p>
-            <p>Tanggal: <?= $tanggal; ?></p>
-            <p>Pelanggan: <?= $nama_pel; ?></p>
-        </div>
-        <br><font style="font-size: 13px;"><b> - - - - - - - - - - - - - - - - - - - - - - - - - -</b></font>
-        </center>
-        </div>
-       </div>
-
-
-       <div class="row">
-        <div class="col-12">
-        <table>
-        <thead>
-        <tr>
-          <th width="60%"><font style="font-size: 13px;">Nama Buku</font></th>
-          <th width="2%"><font style="font-size: 13px;">Qty</font></th>
-          <th width="2%"><font style="font-size: 13px;">Harga </font></th>
-          <th width="70%"><font style="font-size: 13px;">Subtotal</font></th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-       while ($data_pj = mysqli_fetch_array($sql_panggilpj)) {
-        $kd_buku = $data_pj['kd_buku'];
-        $ambilnomor = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'") or die(mysqli_error($koneksi));
-        $data_buku = mysqli_fetch_array($ambilnomor);
-        $buku = $data_buku['judul_buku'];
-        $qty = $data_pj['qty'];
-        $harga = $data_pj['harga'];
-        $subtotal = $qty * $harga;
-        $total += $subtotal;
-          
-      ?>
-        <tr>
-          <td><font style="font-size: 13px;"><?= $buku; ?></font></td>
-          <td><font style="font-size: 13px;"><?= $qty; ?></font></td>
-          <td><font style="font-size: 13px;">Rp <?= number_format($harga, 0, ',', '.'); ?></font></td>
-          <td><font style="font-size: 13px;">Rp.<?=number_format($subtotal,0,",",".");?>,-</font></td>
-        </tr>
-        
-      <?php
-        }
-      ?>
-      </tbody>
-           <tr>
-            <td colspan="4"> - - - - - - - - - - - - - - - - - - - - - </td>
-           </tr>
-        </table>
-        <div class="row">
-            <div class="col-lg-12">
-            <table class="table">
-            <tr>
-                <th width="48%"><font style="font-size: 13px;">Total</font></th>
-                <th width="8%"><font style="font-size: 13px;">:</font></th>
-                <td width="90%"><font style="font-size: 13px;">Rp. <?=number_format($total,0,",",".");?>,-</font></td>
-            </tr>
-            <tr>
-                <td colspan="3"> - - - - - - - - - - - - - - - - - - - - - </td>
-            </tr>
-            </table>
-            </div>
-            <div class="footer">
-                Terima kasih atas kunjungan Anda!<br>
-               Toko Buku Mayang
-            </div>
-
-        </div>
-        </div>
-       </div>
-    </div>
-</body>
-</html>

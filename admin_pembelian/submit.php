@@ -12,6 +12,7 @@
 	// Periksa apakah parameter id_po ada di URL
 	if(isset($_GET['id_po'])) {
         $idpo = $_GET['id_po'];
+        $total = $_GET['total'];
 
         $query_cek =  mysqli_query($koneksi, "SELECT id FROM tbl_po_detail WHERE id_po='$idpo'")or die(mysqli_error($koneksi));
         if (mysqli_num_rows($query_cek) == 0) {
@@ -24,7 +25,7 @@
                 }, 3000);
               </script>";
         }else {
-            $update_status = mysqli_query($koneksi, "UPDATE tbl_po SET status = '2' WHERE id_po = '$idpo'");
+            $update_status = mysqli_query($koneksi, "UPDATE tbl_po SET total='$total',status = '2' WHERE id_po = '$idpo'");
 
             // Cek apakah query berhasil
             if($update_status) {
