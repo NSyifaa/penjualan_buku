@@ -144,7 +144,7 @@
                             <center>
                           <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-default" data-kd_buku="<?=$data['kd_buku'];?>"><i class="nav-icon fas fa-trash"></i> Hapus</button>
 
-                          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-edit" data-kd_buku="<?=$data['kd_buku'];?>" 
+                          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-edit" data-kd_buku="<?=$data['kd_buku'];?>" 
                           data-judul_buku="<?=$data['judul_buku'];?>" 
                           data-id_kategori="<?=$data['id_kategori'];?>" 
                           data-isbn="<?=$data['isbn'];?>" 
