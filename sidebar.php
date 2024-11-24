@@ -104,7 +104,7 @@
             </ul>
           </li>
 
-          <li class="nav-item <?php if($konstruktor=='admin_laporan_beli'){echo 'menu-open';}?> <?php if($konstruktor=='admin_laporan_detail'){echo 'menu-open';}?>">
+          <li class="nav-item <?php if($konstruktor=='admin_laporan_beli'){echo 'menu-open';}?> <?php if($konstruktor=='admin_laporan_detail'){echo 'menu-open';}?> <?php if($konstruktor=='admin_laporan_jual'){echo 'menu-open';}?>">
             <a href="../admin_dashboard" class="nav-link ">
               <i class="nav-icon fas fa-chart-bar"></i>
               <p>
@@ -128,6 +128,14 @@
               <i class="nav-icon fas fa-file-alt"></i>
               <p>
                Laporan Detail Beli
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../admin_laporan_jual" class="nav-link <?php if($konstruktor=='admin_laporan_jual'){echo 'active';}?>">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+               Laporan Penjualan
               </p>
             </a>
           </li>
