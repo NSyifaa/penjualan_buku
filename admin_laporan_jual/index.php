@@ -83,27 +83,20 @@
                 </form>
 
                 <?php
-                if (isset($_POST['cari'])) {
-                  $tanggal_mulai = mysqli_real_escape_string($koneksi, $_POST['tanggal_mulai']);
-                  $tanggal_akhir = mysqli_real_escape_string($koneksi, $_POST['tanggal_akhir']);
+                $tanggal_mulai = '2024-11-15';
+                $tanggal_akhir = '2024-11-25';
+                 $query_penjualan = "
+                 SELECT 
+                  p.tgl AS tanggal,
+                  p.nomor AS nomor_penjualan FROM 
+                  tbl_penjualan p
+                  WHERE 
+                  p.tgl BETWEEN '$tanggal_mulai' AND '$tanggal_akhir'
+                 ";
 
-                  if ($tanggal_mulai > $tanggal_akhir) {
-                    echo "<script>alert('Tanggal Mulai tidak boleh lebih dari Tanggal Akhir!');</script>";
-                  } else {
-                    // Query untuk mengambil data penjualan
-                    $query_penjualan = "
-                    SELECT 
-                        p.tgl AS tanggal,
-                        p.nomor AS nomor_penjualan,
-                        p.harga AS harga_jual
-                    FROM 
-                        tbl_penjualan p
-                    WHERE 
-                        p.tgl BETWEEN '$tanggal_mulai' AND '$tanggal_akhir'
-                    ";
-
-                    $ambil_penjualan = mysqli_query($koneksi, $query_penjualan) or die(mysqli_error($koneksi));
-                ?>
+                 $ambil_penjualan = mysqli_query($koneksi, $query_penjualan) or die(mysqli_error($koneksi));
+                
+                   ?>
                 <br><br>
                 <table id="example1" class="table table-bordered table-striped table-sm mt-4">
                   <thead>
@@ -126,15 +119,16 @@
                     if (mysqli_num_rows($ambil_penjualan) > 0) {
                       while ($data_penjualan = mysqli_fetch_array($ambil_penjualan)) {
                         // Ambil data qty dan harga beli dari tbl_po
-                        $nomor_penjualan = $data_penjualan['nomor_penjualan'];
+                        $nomor_penjualan = $data_penjualan['id_po'];
                         $query_po = "
                         SELECT 
-                            po.qty,
-                            po.harga AS harga_beli
+                            qty,
+                            harga_beli,
+                            harga_jual
                         FROM 
-                            tbl_po po
+                            tbl_stok 
                         WHERE 
-                            po.nomor_po = '$nomor_penjualan'
+                            no_po = '$nomor_penjualan'
                         ";
 
                         $ambil_po = mysqli_query($koneksi, $query_po) or die(mysqli_error($koneksi));
@@ -154,7 +148,7 @@
                     <tr>
                       <td><?= $no++; ?></td>
                       <td><?= $data_penjualan['tanggal']; ?></td>
-                      <td><?= $data_penjualan['nomor_penjualan']; ?></td>
+                      <td><?= $data_penjualan['id_po']; ?></td>
                       <td><?= $qty; ?></td>
                       <td>Rp. <?= number_format($harga_beli, 0, ',', '.'); ?></td>
                       <td>Rp. <?= number_format($harga_jual, 0, ',', '.'); ?></td>
@@ -176,6 +170,13 @@
                   </tfoot>
                 </table>
                 <?php
+                if (isset($_POST['cari'])) {
+                  
+
+                  if ($tanggal_mulai > $tanggal_akhir) {
+                    echo "<script>alert('Tanggal Mulai tidak boleh lebih dari Tanggal Akhir!');</script>";
+                  } else {
+                    // Query untuk mengambil data penjualan
                   }
                 }
                 ?>
