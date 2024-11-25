@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Nov 2024 pada 09.52
+-- Waktu pembuatan: 25 Nov 2024 pada 05.00
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.0.19
 
@@ -67,18 +67,12 @@ CREATE TABLE `tbl_detail_penjualan` (
   `id` int(11) NOT NULL,
   `nomor` varchar(255) NOT NULL,
   `kd_buku` varchar(250) NOT NULL,
+  `harga_beli` int(11) NOT NULL,
   `qty` varchar(250) NOT NULL,
   `harga` varchar(50) NOT NULL,
   `subtotal` varchar(250) NOT NULL,
   `diskon` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `tbl_detail_penjualan`
---
-
-INSERT INTO `tbl_detail_penjualan` (`id`, `nomor`, `kd_buku`, `qty`, `harga`, `subtotal`, `diskon`) VALUES
-(1, '16112024-MYG-1', 'A001\r\n', '4', '100000', '400000', 10);
 
 -- --------------------------------------------------------
 
@@ -141,9 +135,9 @@ CREATE TABLE `tbl_pengguna` (
 INSERT INTO `tbl_pengguna` (`id`, `username`, `password`, `nama_user`, `status`, `alamat`, `kontak`) VALUES
 ('002', 'gataulah', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mbuhhhhh', 1, 'Jepang sebelah kanan', '0738383388222'),
 ('122', 'cipaa', '1612', 'nay', 1, 'jepang', '082343333211'),
-('123', 'admin', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Administrator', 0, 'Bantarkawung', '083861228265'),
-('25e0852b-7f3e-4414-8ff4-5956164c65d6', 'Syifaja', 'e7cb1be70ddcba3dea9144f35988f0b1af5aba1b', 'Naylu Syifa', 1, 'Tanjung, Pwt', '083861228265'),
-('456', 'kasir', '8cfab3d2724448440ea03b9cfa0194cb962a7723', 'Matien jelek', 1, 'Pagojengan', '087829302902'),
+('123', 'admin', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Administrator', 1, 'Bantarkawung', '083861228265'),
+('25e0852b-7f3e-4414-8ff4-5956164c65d6', 'Syifaja', 'e7cb1be70ddcba3dea9144f35988f0b1af5aba1b', 'Naylu Syifa', 0, 'Tanjung, Pwt', '083861228265'),
+('456', 'kasir', '8cfab3d2724448440ea03b9cfa0194cb962a7723', 'Matien jelek', 0, 'Pagojengan', '087829302902'),
 ('4cb6e2a6-4e79-4d2d-b52e-a4ad89616ea0', 'cipa', '54566879bfd232e1ef8ad3619185f1e7e55e46e4', 'Naylu Syifa', 0, 'Bantarkawung, Kab.Brebes', '083526272728');
 
 -- --------------------------------------------------------
@@ -157,8 +151,8 @@ CREATE TABLE `tbl_penjualan` (
   `tgl` datetime NOT NULL,
   `nomor` varchar(255) NOT NULL,
   `nama_pel` varchar(255) NOT NULL,
-  `total` int(11) NOT NULL,
-  `bukti` text NOT NULL,
+  `jml_byr` int(11) NOT NULL,
+  `kembali` int(11) NOT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -166,8 +160,10 @@ CREATE TABLE `tbl_penjualan` (
 -- Dumping data untuk tabel `tbl_penjualan`
 --
 
-INSERT INTO `tbl_penjualan` (`id`, `tgl`, `nomor`, `nama_pel`, `total`, `bukti`, `status`) VALUES
-('233c44b1-6827-417e-891c-9d7cfe45e467', '2024-11-16 11:16:05', '16112024-MYG-1', 'Naylu Syifa', 0, '0', 0);
+INSERT INTO `tbl_penjualan` (`id`, `tgl`, `nomor`, `nama_pel`, `jml_byr`, `kembali`, `status`) VALUES
+('0a36d18f-0afc-4e00-9c02-4fbc1bcf5ef1', '2024-11-25 10:02:41', '25112024-MYG-2', 'Fuaida Nabyla M.Kom', 0, 0, 0),
+('33096281-7ff0-4ee3-994a-08531a389838', '2024-11-25 10:02:28', '25112024-MYG-1', 'nay', 0, 0, 0),
+('a328a0fd-f1d4-444b-8ccf-23cda79d256f', '2024-11-25 10:02:55', '25112024-MYG-3', 'Danita Syifa', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -179,18 +175,22 @@ CREATE TABLE `tbl_po` (
   `id_po` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal` date NOT NULL,
   `kode_sup` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int(11) NOT NULL
+  `status` int(11) NOT NULL,
+  `total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `tbl_po`
 --
 
-INSERT INTO `tbl_po` (`id_po`, `tanggal`, `kode_sup`, `status`) VALUES
-('15112024-PO-1', '2024-11-15', 'S002', 3),
-('15112024-PO-2', '2024-11-15', 'S003', 3),
-('15112024-PO-3', '2024-11-15', 'S002', 2),
-('16112024-PO-1', '2024-11-16', 'S001', 1);
+INSERT INTO `tbl_po` (`id_po`, `tanggal`, `kode_sup`, `status`, `total`) VALUES
+('15112024-PO-1', '2024-11-15', 'S002', 3, 0),
+('15112024-PO-2', '2024-11-15', 'S003', 3, 0),
+('15112024-PO-3', '2024-11-15', 'S002', 3, 0),
+('16112024-PO-1', '2024-11-16', 'S001', 3, 0),
+('21112024-PO-1', '2024-11-21', 'S001', 2, 5994000),
+('22112024-PO-1', '2024-11-22', 'S004', 3, 500000),
+('22112024-PO-2', '2024-11-22', 'S004', 3, 1750000);
 
 -- --------------------------------------------------------
 
@@ -219,8 +219,12 @@ INSERT INTO `tbl_po_detail` (`id`, `id_po`, `kd_buku`, `jumlah`, `harga`, `qty_d
 (3, '15112024-PO-2', 'A009', 60, '12000', '50', '600000', '1'),
 (4, '15112024-PO-2', 'A010', 90, '23000', '80', '1840000', '1'),
 (5, '15112024-PO-2', 'A009', 80, '25000', '50', '600000', '1'),
-(6, '15112024-PO-3', 'A001', 12, '10000', NULL, NULL, '0'),
-(7, '16112024-PO-1', 'A002', 20, '10000', NULL, NULL, '0');
+(6, '15112024-PO-3', 'A001', 12, '10000', '12', '120000', '1'),
+(7, '16112024-PO-1', 'A002', 20, '10000', '20', '200000', '1'),
+(8, '21112024-PO-1', 'A001', 666, '9000', NULL, NULL, '0'),
+(9, '22112024-PO-1', 'A005', 50, '10000', '40', '400000', '1'),
+(10, '22112024-PO-2', 'A002', 50, '20000', '40', '800000', '1'),
+(11, '22112024-PO-2', 'A001', 50, '15000', '50', '750000', '1');
 
 -- --------------------------------------------------------
 
@@ -241,11 +245,16 @@ CREATE TABLE `tbl_stok` (
 --
 
 INSERT INTO `tbl_stok` (`no_po`, `kd_buku`, `qty`, `harga_beli`, `harga_jual`) VALUES
-('15112024-PO-1 ', 'A001', 50, 12000, 20400),
-('15112024-PO-1 ', 'A004', 40, 80000, 136000),
-('15112024-PO-2 ', 'A009', 50, 12000, 20400),
-('15112024-PO-2 ', 'A010', 80, 23000, 39100),
-('15112024-PO-2 ', 'A009', 50, 25000, 42500);
+('15112024-PO-1 ', 'A001', 8, 12000, 20400),
+('15112024-PO-1 ', 'A004', 0, 80000, 136000),
+('15112024-PO-2 ', 'A009', 38, 12000, 20400),
+('15112024-PO-2 ', 'A010', 50, 23000, 39100),
+('15112024-PO-2 ', 'A009', 38, 25000, 42500),
+('15112024-PO-3 ', 'A001', 12, 10000, 17000),
+('16112024-PO-1 ', 'A002', 6, 10000, 17000),
+('22112024-PO-1 ', 'A005', 30, 10000, 17000),
+('22112024-PO-2 ', 'A002', 40, 20000, 34000),
+('22112024-PO-2 ', 'A001', 50, 15000, 25500);
 
 -- --------------------------------------------------------
 
@@ -269,7 +278,8 @@ CREATE TABLE `tbl_supplier` (
 INSERT INTO `tbl_supplier` (`kode_sup`, `nama_suplier`, `alamat`, `kontak_sup`, `nama_sales`, `kontak_sales`) VALUES
 ('S001', 'PT SUMBER JAYA AQUA', 'Yogyakarta', '083492001939', 'Naylu Syifa', '0823192039393'),
 ('S002', 'PT TANJUNG MULIA INFORMATIKA', 'Purwokerto Barat', '089392000192', 'Matien Hakim FB', '08392838922'),
-('S003', 'PT MENCARI CINTA SEJATI', 'ALAAY', '087636277721', 'ADM-UHUY', '083930200300');
+('S003', 'PT MENCARI CINTA SEJATI', 'ALAAY', '087636277721', 'ADM-UHUY', '083930200300'),
+('S004', 'CV SYIFA HADJU', 'Dimana-mana hatiku senang', '082393993040', 'Syifaaaa', '081029399400');
 
 --
 -- Indexes for dumped tables
@@ -337,7 +347,7 @@ ALTER TABLE `tbl_supplier`
 -- AUTO_INCREMENT untuk tabel `tbl_detail_penjualan`
 --
 ALTER TABLE `tbl_detail_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_kategori`
@@ -349,7 +359,7 @@ ALTER TABLE `tbl_kategori`
 -- AUTO_INCREMENT untuk tabel `tbl_po_detail`
 --
 ALTER TABLE `tbl_po_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
