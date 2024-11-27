@@ -6,11 +6,11 @@
   <title>Toko Buku Mayang</title>
   <?php
   session_start();
-  $konstruktor ='admin_penjualan';
+  $konstruktor ='kasir_penjualan';
   require_once '../database/koneksi.php';
   if(isset($_SESSION['status'])){
     $status = $_SESSION['status'];
-    if($status != 0){
+    if($status != 1){
       echo '<script>window.location = "../auth/logout.php"</script>';
     }
   }else{
@@ -52,7 +52,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <?php
-      include '../sidebar.php';
+      include '../kasir_sidebar.php';
       ?>
     </div>
     <!-- /.sidebar -->
@@ -88,7 +88,7 @@
                 <h3 class="card-title" style="color: white"><i class="nav-icon fas fa-money-bill-wave" style="color: white"></i> Penjualan </h3>
                 </div>
                 <div class="card-body">
-                <a href="../admin_penjualan" class="btn btn-secondary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
+                <a href="../kasir_penjualan" class="btn btn-secondary btn-sm"><i class="nav-icon fas fa-chevron-left"></i> Kembali</a>
                 <div class="row">
                     <div class="col-lg-5">
                     <table id="example1" class="table table-bordered table-striped table-sm">
@@ -479,7 +479,7 @@ if(isset($koneksi, $_POST['hapus'])){
         swal("Berhasil", "Pembayaran berhasil disimpan!", "success");
 
        setTimeout(function(){
-           window.location.href ="../admin_penjualan";
+           window.location.href ="../kasir_penjualan";
          }, 2000);
         </script>';
     }

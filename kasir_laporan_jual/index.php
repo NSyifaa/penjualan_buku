@@ -6,12 +6,12 @@
   <title>Laporan Penjualan</title>
   <?php
   session_start();
-  $konstruktor = 'admin_laporan_jual';
+  $konstruktor = 'kasir_laporan_jual';
   require_once '../database/koneksi.php';
 
   if (isset($_SESSION['status'])) {
     $status = $_SESSION['status'];
-    if ($status != 0) {
+    if ($status != 1) {
       echo '<script>window.location = "../auth/logout.php"</script>';
     }
   } else {
@@ -42,7 +42,7 @@
 
     <div class="sidebar">
       <?php
-      include '../sidebar.php';
+      include '../kasir_sidebar.php';
       ?>
     </div>
   </aside>

@@ -32,9 +32,9 @@ if (isset($koneksi, $_POST['tambah'])) {
     // Menghasilkan UUID
     $uuid = generateUUIDv4();
     // Ambil data dari form
-    $tgl = mysqli_real_escape_string($koneksi, $_POST['tgl']); // User-input date (from form)
-    $tanggal_format = date("dmY", strtotime($tgl)); // Format the input date for PO number
-    $tanggal = date("Y-m-d H:i:s"); //
+    $tanggal = date("Y-m-d H:i:s"); // Ambil tanggal saat ini
+    $tgl = date("Y-m-d"); // Ambil tanggal saat ini
+    $tanggal_format = date("dmY"); // Format tanggal untuk no_po
     $kode = "MYG"; // Kode tetap untuk penanda PO
     $nama = trim(mysqli_real_escape_string($koneksi, $_POST['nama'])); // Ambil kode supplier dari form
     $jml='0';
@@ -64,7 +64,7 @@ if (isset($koneksi, $_POST['tambah'])) {
     $no_po_baru = "$tanggal_format-$kode-$no_urut";
 
     // Eksekusi query untuk menambahkan data PO
-    $tambahdata = mysqli_query($koneksi, "INSERT INTO tbl_penjualan (id, tgl,nomor, nama_pel, jml_byr, kembali, status) VALUES ('$uuid','$tgl','$no_po_baru',  '$nama', '$jml', '$kembali', '$status')") 
+    $tambahdata = mysqli_query($koneksi, "INSERT INTO tbl_penjualan (id, tgl,nomor, nama_pel, jml_byr, kembali, status) VALUES ('$uuid','$tanggal','$no_po_baru',  '$nama', '$jml', '$kembali', '$status')") 
         or die(mysqli_error($koneksi));
 
     ?>
@@ -73,7 +73,7 @@ if (isset($koneksi, $_POST['tambah'])) {
     swal("Berhasil", "Data Penjualan sudah Berhasil ditambah", "success");
 
     setTimeout(function(){
-        window.location.href = "../admin_penjualan";
+        window.location.href = "../kasir_penjualan";
     }, 2000);
     </script>
     <?php

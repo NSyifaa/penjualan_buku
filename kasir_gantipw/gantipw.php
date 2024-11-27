@@ -6,11 +6,12 @@
   <title>Toko Buku Mayang</title>
   <?php
   session_start();
-  $konstruktor ='kasir_dashboard';
+  $konstruktor ='kasir_gantipw';
+  require_once '../database/koneksi.php';
 
   if(isset($_SESSION['status'])){
     $status = $_SESSION['status'];
-    if($status != 1){
+    if($status != 0){
       echo '<script>window.location = "../auth/logout.php"</script>';
     }
   }else{
@@ -42,7 +43,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-warning elevation-4"  style="background-color: #024CAA">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #024CAA;">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="../auth/assets/img/logobk.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -52,7 +53,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <?php
-      include '../kasir_sidebar.php';
+      include '../sidebar.php';
       ?>
     </div>
     <!-- /.sidebar -->
@@ -63,7 +64,11 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-       
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h1 class="m-0"> Ganti Password</h1>
+            </div>
+        </div>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -72,9 +77,56 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-         <?=$_SESSION['nama_user'];?>
-        
+            <div class="col-lg-6">
 
+            <?php
+            if(isset($_POST['updatepw']))
+            {
+                $username = $_SESSION['username'];
+                $pwbaru = trim(mysqli_real_escape_string($koneksi, $_POST['passbaru']));
+                $pwbaru2 = trim(mysqli_real_escape_string($koneksi, $_POST['passbaru2']));
+
+                if ($pwbaru!=$pwbaru2) {
+                    echo '
+                    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> 
+                </script>
+                <script>
+                swal("Peringatan", "Password tidak sama", "warning");
+
+                setTimeout(function(){
+                window.location.href = "../ganti_pass";
+
+                },2000);
+                </script>
+                    ';
+                }else{
+                    $pwbaru = sha1(trim(mysqli_real_escape_string($koneksi, $_POST['passbaru'])));
+                    mysqli_query($koneksi, "UPDATE tbl_pengguna SET password='$pwbaru' WHERE username='$username'") or die (mysqli_error($koneksi));
+
+                    echo '
+                     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> 
+                        </script>
+                        <script>
+                        swal("success", "Password telah di Update", "success");
+
+                        setTimeout(function(){
+                        window.location.href = "../auth/logout.php";
+
+                        },2000);
+                        </script>
+                    
+                    ';
+
+
+                }
+
+               
+                
+            }
+
+            ?>
+
+            </div>
         </div>
         <!-- /.row -->
       </div>
