@@ -6,16 +6,16 @@
   <title>Toko Buku Mayang</title>
   <?php
   session_start();
-  $konstruktor ='admin_laporan_detail';
+  $konstruktor = 'admin_laporan_detail';
   require_once '../database/koneksi.php';
 
-  if(isset($_SESSION['status'])){
-    $status = $_SESSION['status'];
-    if($status != 0){
+  if (isset($_SESSION['status'])) {
+      $status = $_SESSION['status'];
+      if ($status != 0) {
+          echo '<script>window.location = "../auth/logout.php"</script>';
+      }
+  } else {
       echo '<script>window.location = "../auth/logout.php"</script>';
-    }
-  }else{
-    echo '<script>window.location = "../auth/logout.php"</script>';
   }
 
   $queryPO = mysqli_query($koneksi, "SELECT * FROM tbl_po") or die(mysqli_error($koneksi));
@@ -30,13 +30,10 @@
       ];
   }
 
-  // Untuk data detail PO setelah tombol "Tampilkan" diklik
   $poDetails = [];
   $selectedPO = '';
   if (isset($_POST['modalPO'])) {
       $selectedPO = $_POST['modalPO'];
-
-      // Query data detail PO berdasarkan ID PO
       $queryDetail = mysqli_query($koneksi, "SELECT * FROM tbl_po_detail WHERE id_po = '$selectedPO'") or die(mysqli_error($koneksi));
       while ($row = mysqli_fetch_assoc($queryDetail)) {
           $poDetails[] = $row;
@@ -48,13 +45,10 @@
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <?php include '../navbar.php'; ?>
   </nav>
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-warning elevation-4" style="background-color: #024CAA">
     <a href="index3.html" class="brand-link">
       <img src="../auth/assets/img/logobk.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -65,95 +59,88 @@
     </div>
   </aside>
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="content-header">
-      <div class="container-fluid"></div><!-- /.container-fluid -->
-    </div><!-- /.content-header -->
+      <div class="container-fluid"></div>
+    </div>
 
-    <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h5><i class="nav-icon fas fa-file-alt"></i> Laporan Detail Pembelian</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#poModal">Cari Nomor PO</button>
-                        </div>
-
-                        <!-- Tampilkan Detail PO jika ada -->
-                        <?php if (!empty($poDetails)) : ?>
-                            <!-- Menampilkan Keterangan Nomor PO di atas tabel -->
-                              <br>
-                              <br>
-                               <div class="col-lg-6">
-                              <table class="table table-sm table-borderless table-striped">
-                              <tr>
-                                    <td width="35%">Nomor PO</td>
-                                    <td width="2%">:</td>
-                                      <td>
-                                        <b><?=$selectedPO;?></b>
-                                      </td>
-                              </tr>
-                              <tr>
-                                    <td width="35%">Tanggal PO</td>
-                                    <td width="2%">:</td>
-                                      <td>
-                                        <b><?=$poList[array_search($selectedPO, array_column($poList, 'id_po'))]['tanggal'];?></b>
-                                      </td>
-                              </tr>
-
-                              </table>
-                              </div>
-                           
-                            <!-- Tabel Detail PO -->
-                            <table class="table table-bordered table-striped mt-3">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Barang</th>
-                                        <th>Jumlah</th>
-                                        <th>Harga</th>
-                                        <th>Qty Datang</th>
-                                        <th>Harga Datang</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $no = 1; ?>
-                                    <?php foreach ($poDetails as $detail) : ?>
-                                        <tr>
-                                            <td><?= $no++; ?></td>
-                                            <td>
-                                                <?php
-                                                $kd_buku = $detail['kd_buku'];
-                                                $ambilnomor = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'") or die(mysqli_error($koneksi));
-                                                $data_buku = mysqli_fetch_assoc($ambilnomor);
-                                                $buku = $data_buku['judul_buku'];
-                                                ?>
-                                                <?= $buku; ?>
-                                            </td>
-                                            <td><?= $detail['jumlah']; ?></td>
-                                            <td><?= number_format($detail['harga'], 2, ',', '.'); ?></td>
-                                            <td><?= $detail['qty_dtg']; ?></td>
-                                            <td><?= number_format($detail['harga_dtg'], 2, ',', '.'); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        <?php endif; ?>
-                    </div>
+          <div class="col-lg-12">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h5><i class="nav-icon fas fa-file-alt"></i> Laporan Detail Pembelian</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#poModal">Cari Nomor PO</button>
                 </div>
-            </div>
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div><!-- /.content -->
-  </div><!-- /.content-wrapper -->
 
-  <!-- Modal for PO Selection -->
+                <?php if (!empty($poDetails)) : ?>
+                  <br><br>
+                  <div class="col-lg-6">
+                    <table class="table table-sm table-borderless table-striped">
+                      <tr>
+                        <td width="35%">Nomor PO</td>
+                        <td width="2%">:</td>
+                        <td><b><?= $selectedPO; ?></b></td>
+                      </tr>
+                      <tr>
+                        <td width="35%">Tanggal PO</td>
+                        <td width="2%">:</td>
+                        <td><b><?= $poList[array_search($selectedPO, array_column($poList, 'id_po'))]['tanggal']; ?></b></td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- Tombol Ekspor -->
+                  <div class="mb-3">
+                    <a href="export_excel.php?id_po=<?= urlencode($selectedPO); ?>" class="btn btn-success btn-sm">Ekspor ke Excel</a>
+                    <a href="export_pdf.php?id_po=<?= urlencode($selectedPO); ?>" class="btn btn-danger btn-sm">Ekspor ke PDF</a>
+                  </div>
+                  <table id="example1" class="table table-bordered table-striped table-sm mt-4">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+                        <th>Qty Datang</th>
+                        <th>Harga Datang</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php $no = 1; ?>
+                      <?php foreach ($poDetails as $detail) : ?>
+                        <tr>
+                          <td><?= $no++; ?></td>
+                          <td>
+                            <?php
+                            $kd_buku = $detail['kd_buku'];
+                            $ambilnomor = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'") or die(mysqli_error($koneksi));
+                            $data_buku = mysqli_fetch_assoc($ambilnomor);
+                            $buku = $data_buku['judul_buku'];
+                            ?>
+                            <?= $buku; ?>
+                          </td>
+                          <td><?= $detail['jumlah']; ?></td>
+                          <td><?= number_format($detail['harga'], 2, ',', '.'); ?></td>
+                          <td><?= $detail['qty_dtg']; ?></td>
+                          <td><?= number_format($detail['harga_dtg'], 2, ',', '.'); ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="poModal" tabindex="-1" role="dialog" aria-labelledby="poModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -165,7 +152,7 @@
         </div>
         <div class="modal-body">
           <form method="POST" action="">
-            <table class="table table-bordered table-striped">
+          <table id="example1" class="table table-bordered table-striped table-sm mt-4">
               <thead>
                 <tr>
                   <th>No</th>
@@ -196,11 +183,9 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <?php include '../footer.php'; ?>
-</div><!-- /.wrapper -->
+</div>
 
-<!-- REQUIRED SCRIPTS -->
 <?php include '../script.php'; ?>
 </body>
-</html>
+</html> 
