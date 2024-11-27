@@ -11,10 +11,10 @@
   if(isset($_SESSION['status'])){
     $status = $_SESSION['status'];
     if($status != 0){
-      echo '<script>window.location = "../auth/logout.php"</script>';
+      // echo '<script>window.location = "../auth/logout.php"</script>';
     }
   }else{
-    echo '<script>window.location = "../auth/logout.php"</script>';
+    // echo '<script>window.location = "../auth/logout.php"</script>';
   }
   ?>
 
