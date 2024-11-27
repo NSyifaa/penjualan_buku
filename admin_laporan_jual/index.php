@@ -83,100 +83,112 @@
                 </form>
 
                 <?php
-                $tanggal_mulai = '2024-11-15';
-                $tanggal_akhir = '2024-11-25';
-                 $query_penjualan = "
-                 SELECT 
-                  p.tgl AS tanggal,
-                  p.nomor AS nomor_penjualan FROM 
-                  tbl_penjualan p
-                  WHERE 
-                  p.tgl BETWEEN '$tanggal_mulai' AND '$tanggal_akhir'
-                 ";
-
-                 $ambil_penjualan = mysqli_query($koneksi, $query_penjualan) or die(mysqli_error($koneksi));
-                
-                   ?>
-                <br><br>
-                <table id="example1" class="table table-bordered table-striped table-sm mt-4">
-                  <thead>
-                    <tr>
-                      <th width="5%">No</th>
-                      <th>Tanggal</th>
-                      <th>Nomor Penjualan</th>
-                      <th>Qty</th>
-                      <th>Harga Beli</th>
-                      <th>Harga Jual</th>
-                      <th>Selisih</th>
-                      <th>Total Selisih</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $no = 1;
-                    $total_selisih = 0;
-
-                    if (mysqli_num_rows($ambil_penjualan) > 0) {
-                      while ($data_penjualan = mysqli_fetch_array($ambil_penjualan)) {
-                        // Ambil data qty dan harga beli dari tbl_po
-                        $nomor_penjualan = $data_penjualan['id_po'];
-                        $query_po = "
-                        SELECT 
-                            qty,
-                            harga_beli,
-                            harga_jual
-                        FROM 
-                            tbl_stok 
-                        WHERE 
-                            no_po = '$nomor_penjualan'
-                        ";
-
-                        $ambil_po = mysqli_query($koneksi, $query_po) or die(mysqli_error($koneksi));
-                        $data_po = mysqli_fetch_array($ambil_po);
-
-                        // Hitung selisih dan total selisih
-                        $harga_jual = $data_penjualan['harga_jual'];
-                        $harga_beli = $data_po['harga_beli'];
-                        $qty = $data_po['qty'];
-
-                        $selisih = $harga_jual - $harga_beli;
-                        $total_selisih_per_item = $selisih * $qty;
-
-                        // Akumulasi total selisih
-                        $total_selisih += $total_selisih_per_item;
-                    ?>
-                    <tr>
-                      <td><?= $no++; ?></td>
-                      <td><?= $data_penjualan['tanggal']; ?></td>
-                      <td><?= $data_penjualan['id_po']; ?></td>
-                      <td><?= $qty; ?></td>
-                      <td>Rp. <?= number_format($harga_beli, 0, ',', '.'); ?></td>
-                      <td>Rp. <?= number_format($harga_jual, 0, ',', '.'); ?></td>
-                      <td>Rp. <?= number_format($selisih, 0, ',', '.'); ?></td>
-                      <td>Rp. <?= number_format($total_selisih_per_item, 0, ',', '.'); ?></td>
-                    </tr>
-                    <?php
-                      }
-                    } else {
-                      echo "<tr><td colspan='8'>Tidak ada data yang ditemukan!</td></tr>";
-                    }
-                    ?>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th colspan="7" style="text-align: right;">Total Selisih:</th>
-                      <th>Rp. <?= number_format($total_selisih, 0, ',', '.'); ?></th>
-                    </tr>
-                  </tfoot>
-                </table>
-                <?php
                 if (isset($_POST['cari'])) {
-                  
+                  $tanggal_mulai = $_POST['tanggal_mulai'];
+                  $tanggal_akhir = $_POST['tanggal_akhir'];
 
                   if ($tanggal_mulai > $tanggal_akhir) {
                     echo "<script>alert('Tanggal Mulai tidak boleh lebih dari Tanggal Akhir!');</script>";
                   } else {
-                    // Query untuk mengambil data penjualan
+                    // Query untuk mengambil data penjualan berdasarkan tanggal
+                    $query_penjualan = "
+                      SELECT 
+                      tgl, nomor 
+                      FROM 
+                      tbl_penjualan 
+                      WHERE tgl BETWEEN '$tanggal_mulai' AND '$tanggal_akhir'
+                    ";
+
+                    $ambil_penjualan = mysqli_query($koneksi, $query_penjualan) or die(mysqli_error($koneksi));
+                    ?>
+
+                    <br>
+
+                    <div class="mb-3">
+                      <a href="export_excel.php?tanggal_mulai=<?= urlencode($tanggal_mulai); ?>&tanggal_akhir=<?= urlencode($tanggal_akhir); ?>" class="btn btn-success btn-sm">Ekspor ke Excel</a>
+                      <a href="export_pdf.php?tanggal_mulai=<?= urlencode($tanggal_mulai); ?>&tanggal_akhir=<?= urlencode($tanggal_akhir); ?>" class="btn btn-danger btn-sm">Ekspor ke PDF</a>
+                    </div>
+                    <table id="example1" class="table table-bordered table-striped table-sm mt-4">
+                      <thead>
+                        <tr>
+                          <th width="5%">No</th>
+                          <th>Tanggal</th>
+                          <th>Nomor Penjualan</th>
+                          <th>Qty</th>
+                          <th>Harga Beli</th>
+                           <!-- Tambahkan kolom Total Selisih -->
+                          <th>Harga Jual</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        $no = 1;
+                        $total_selisih = 0;
+
+                        if (mysqli_num_rows($ambil_penjualan) > 0) {
+                          while ($data_penjualan = mysqli_fetch_array($ambil_penjualan)) {
+                            // Ambil data qty dan harga beli dari tbl_detail_penjualan
+                            $nomor_penjualan = $data_penjualan['nomor'];
+                            $query_po = "
+                              SELECT 
+                                  qty,
+                                  harga_beli,
+                                  harga
+                              FROM 
+                                  tbl_detail_penjualan 
+                              WHERE 
+                                  nomor = '$nomor_penjualan'
+                            ";
+
+                            $ambil_po = mysqli_query($koneksi, $query_po) or die(mysqli_error($koneksi));
+                            $data_po = mysqli_fetch_array($ambil_po);
+
+                            // Cek apakah data di tbl_detail_penjualan ada
+                            if ($data_po) {
+                                $harga_jual = $data_po['harga'];
+                                $harga_beli = $data_po['harga_beli'];
+                                $qty = $data_po['qty'];
+
+                                $selisih = $harga_jual - $harga_beli;
+                                $total_selisih_per_item = $selisih * $qty;
+
+                                // Akumulasi total selisih
+                                $total_selisih += $total_selisih_per_item;
+                            } else {
+                                // Jika data kosong, atur nilai default
+                                $qty = 0;
+                                $harga_beli = 0;
+                                $harga_jual = 0;
+                                $selisih = 0;
+                            }
+                            ?>
+                            <tr>
+                              <td><?= $no++; ?></td>
+                              <td><?= $data_penjualan['tgl']; ?></td>
+                              <td><?= $data_penjualan['nomor']; ?></td>
+                              <td><?= $qty; ?></td>
+                              <td>Rp. <?= number_format($harga_beli, 0, ',', '.'); ?></td>
+                             
+                              <td>Rp. <?= number_format($harga_jual, 0, ',', '.'); ?></td>
+                            </tr>
+                            <?php
+                          }
+                        } else {
+                          echo "<tr><td colspan='7'>Tidak ada data yang ditemukan!</td></tr>";
+                        }
+                        ?>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th colspan="4" style="text-align: right;">Total Selisih:</th>
+                          <th colspan="2" class="text-center">Rp. <?= number_format($total_selisih, 0, ',', '.'); ?></th> <!-- Menampilkan total selisih di tengah -->
+                        </tr>
+                      </tfoot>
+                    </table>
+                    <!-- Tombol Ekspor muncul setelah data ditampilkan -->
+                    
+
+                    <?php
                   }
                 }
                 ?>
