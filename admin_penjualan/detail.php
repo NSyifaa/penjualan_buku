@@ -123,6 +123,7 @@
                           <td><?= $data_stok['qty']; ?></td>
                          
                           <td>Rp <?= number_format($data_stok['harga_jual'], 0, ',', '.'); ?></td>
+                          <td>Rp <?= number_format($data_stok['harga_beli'], 0, ',', '.'); ?></td>
                           <td>
                             <center>
                             <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-tambah" 
@@ -132,6 +133,7 @@
                             data-nama_buku="<?= $nama_buku;?>"
                             data-kd_buku="<?= $kd_buku;?>"
                             data-stok="<?= $data_stok['qty'];?>"
+                            data-beli="<?= $data_stok['harga_beli'];?>"
                             data-harga="<?= $data_stok['harga_jual'];?>"
                             >
                                 <i class="nav-icon fas fa-plus"></i> 
@@ -322,6 +324,11 @@
             <input type="number" class="form-control" id="hrg" name="hrg" readonly>
         </div>
 
+        <div class="form-group">
+            <label for="harga">Harga beli</label>
+            <input type="number" class="form-control" id="beli" name="beli" hidden>
+        </div>
+
           <div class="form-group">
             <label for="jml">QTY</label>
             <input type="number" class="form-control" id="qty" name="qty"  placeholder="input jumlah buku">    
@@ -397,10 +404,11 @@ if(isset($koneksi, $_POST['tambah'])){
     $nomor    = trim(mysqli_escape_string($koneksi, $_POST['nomor']));
     $kodebuku = trim(mysqli_escape_string($koneksi, $_POST['kd_buku']));
     $harga    = trim(mysqli_escape_string($koneksi, $_POST['hrg']));
+    $beli    = trim(mysqli_escape_string($koneksi, $_POST['beli']));
     $subtotal = $qty * $harga;
     $stok2    = $stok - $qty;
     $diskon = 0;
-    $querycek = mysqli_query($koneksi, "INSERT INTO tbl_detail_penjualan VALUES (NULL,'$nomor', '$kodebuku', '$qty', '$harga', '$subtotal', '$diskon')") or die(mysqli_error($koneksi));
+    $querycek = mysqli_query($koneksi, "INSERT INTO tbl_detail_penjualan VALUES (NULL,'$nomor', '$kodebuku','$beli', '$qty', '$harga', '$subtotal', '$diskon')") or die(mysqli_error($koneksi));
     $queryup = mysqli_query($koneksi, "UPDATE tbl_stok SET qty='$stok2' WHERE no_po='$no_po' AND kd_buku='$kodebuku'") or die(mysqli_error($koneksi));
     echo '
     <script src="../assets_adminLTE/dist/js/sweetalert.min.js"></script>
@@ -493,6 +501,7 @@ if(isset($koneksi, $_POST['hapus'])){
     var buku = $(e.relatedTarget).data('nama_buku');
     var jumlah = $(e.relatedTarget).data('stok');
     var harga = $(e.relatedTarget).data('harga');
+    var beli = $(e.relatedTarget).data('beli');
 
     // Mengisi data ke dalam form modal
     $(e.currentTarget).find('input[name="id"]').val(id);
@@ -502,6 +511,7 @@ if(isset($koneksi, $_POST['hapus'])){
     $(e.currentTarget).find('input[name="buku"]').val(buku);
     $(e.currentTarget).find('input[name="jumlah"]').val(jumlah);
     $(e.currentTarget).find('input[name="hrg"]').val(harga);
+    $(e.currentTarget).find('input[name="beli"]').val(beli);
 });
 </script>
   <script type="text/javascript">
