@@ -17,6 +17,14 @@
   }else{
     echo '<script>window.location = "../auth/logout.php"</script>';
   }
+  $id = 0; 
+  $jumlah = 0;
+  $cek = mysqli_query($koneksi, "SELECT * FROM tbl_peringatan_stok LIMIT 1");
+  if ($cek && mysqli_num_rows($cek) > 0) {
+      $tampilin = mysqli_fetch_assoc($cek);
+      $id = $tampilin['id'];
+      $jumlah = $tampilin['jumlah'];
+  }
   ?>
 
   <?php
@@ -207,9 +215,57 @@
           </div>
         <div class="card-body">
           <div class="row">
+
                 <div class="col lg-5">
-              jbdjbsjd
+                <div class="row">
+               
+                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-setting"> <i class="nav-icon fas fa-edit"></i>
+                    Setting Reminder
+                  </button>
+
+                  <table id="example2" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>No</th>
+                <th>Data Buku</th>
+                <th>Qty</th>
+                
+               
+                
+              </tr>
+              </thead>
+              <tbody>
+              <?php
+                    $no=1;
+                    $sql_panggilstok = mysqli_query($koneksi, "SELECT kd_buku, qty FROM tbl_stok WHERE qty < $jumlah ") or die(mysqli_error($koneksi));
+
+                    if (mysqli_num_rows($sql_panggilstok) > 0) {
+                      while ($data_stok = mysqli_fetch_array($sql_panggilstok)) {
+                        ?>
+                        <tr>
+                          <td><?= $no++ ; ?></td>
+                          <td>
+                            <?php 
+                              $kd_buku = $data_stok['kd_buku']; 
+                              $pgl_buku = mysqli_query($koneksi, "SELECT judul_buku FROM tbl_buku WHERE kd_buku='$kd_buku'")or die(mysqli_error($koneksi));
+                              $data_buku = mysqli_fetch_array($pgl_buku);
+                              echo $nama_buku = $data_buku['judul_buku'];
+                            ?>
+                          </td>
+                          <td><?= $data_stok['qty']; ?></td>
+                         
+                        </tr>
+                        <?php
+                      }
+                    }
+              ?>
+              
+              </tbody>
+            </table>
+                    </div>
+
                 </div>
+
                 <div class="col-lg-7">
               <div class="card">
                 <div class="card-header">
@@ -284,14 +340,48 @@
     </div>
   </div>
 
+  
+
   <?php
   include '../footer.php';
   ?>
 
 </div>
+<div class="modal fade" id="modal-setting">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#091057;">
+              <h4 class="modal-title" style="color: white"><i class="nav-icon fas fa-edit"></i> Setting Reminder </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="edit.php"  role="form" class="form-layout" method="post" enctype="multipart/form-data">
+             <div class="form-group">
+              <input type="text" class="form-control" id="id" name="id" value="<?php echo $id; ?> " hidden >
+             </div>
+             <div class="form-group">
+              <label for="id">jumlah</label>
+              <input type="number" class="form-control" id="jumlah" name="jumlah" value="<?php echo $jumlah; ?>" >
+             </div>
+            </div>
+            <div class="modal-footer justify-content-between-right">
+              <button type="submit" name="edit" class="btn btn-primary"><i class="nav-icon fas fa-download"></i>edit</button>
+            </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 
 <?php
   include '../script.php';
   ?>
+
+
+
 </body>
 </html>
